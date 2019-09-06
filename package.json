@@ -1,0 +1,23 @@
+{
+  "name": "mypackage",
+  "version": "0.0.1",
+  "dependensies": {
+    "express": "^4.16.3",
+    "mysql": "^2.16.0",
+    "body-parser": "^1.18.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "description": "This is part of the course work in the subject TDAT2003 Systemutvikling 2 med web-applikasjoner",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.stud.idi.ntnu.no/nikolard/websysoving3.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
