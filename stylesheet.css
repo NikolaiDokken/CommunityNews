@@ -1,0 +1,86 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    background-color: lightblue;
+}
+
+nav div {
+    padding: 1vw;
+    display: flex;
+    justify-content: center;
+}
+
+nav div a {
+    text-decoration: none;
+    color: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
+.live_h1 {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.outer {
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    
+}
+
+.outer div {
+    display: inline-block;
+    font-size: 20px;
+    float: none;
+    margin: 10px;
+    padding: 5px;
+    background-color: #ccd4ff;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.form_container {
+    margin: 2vw;
+}
+
+.input {
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.input input[type="short"] {
+    width: 450px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+}
+
+.input input[type="long"] {
+    width: 600px;
+    height: 200px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+}
+
+.form_container textarea {
+    
+}
