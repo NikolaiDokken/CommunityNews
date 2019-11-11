@@ -1,24 +1,35 @@
 {
-  "name": "mypackage",
-  "version": "0.0.1",
-  "dependensies": {
-    "express": "^4.16.3",
-    "mysql": "^2.16.0",
-    "body-parser": "^1.18.3"
-  },
+  "name": "oving6",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "express": "^4.17.1",
-    "mysql": "^2.17.1"
+    "axios": "^0.19.0",
+    "jquery": "^3.4.1",
+    "popper": "^1.0.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0"
   },
-  "description": "This is part of the course work in the subject TDAT2003 Systemutvikling 2 med web-applikasjoner",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://gitlab.stud.idi.ntnu.no/nikolard/websysoving3.git"
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "author": "",
-  "license": "ISC"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
