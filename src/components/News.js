@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { NavLink } from "react-router-dom";
 import "../styles/News.css";
+import { getFrontPageNews } from "../Service.js";
 
 export default class News extends Component {
   constructor(props) {
@@ -14,9 +14,7 @@ export default class News extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:8080/viktighet/1").then(res => {
-      const items = res.data;
-      console.log(items);
+    getFrontPageNews().then(items => {
       this.setState({ items });
       this.setState({ isLoaded: true });
     });

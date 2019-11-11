@@ -4,6 +4,7 @@ import "../styles/Article.css";
 import Navbar from "./Navbar.js";
 import Footer from "./Footer.js";
 import axios from "axios";
+import { getArticle } from "../Service";
 
 export default class Article extends Component<{
   match: { params: { id: number } }
@@ -24,21 +25,18 @@ export default class Article extends Component<{
   }
 
   componentDidMount() {
-    axios
-      .get("http://localhost:8080/sak/" + this.props.match.params.id)
-      .then(res => {
-        const items = res.data[0];
-        console.log(items);
-        this.setState({
-          forfatter: items.forfatter,
-          overskrift: items.overskrift,
-          innhold: items.innhold,
-          tidspunkt: items.tidspunkt,
-          bilde: items.bilde
-        });
-        this.setState({ isLoaded: true });
+    getArticle(this.props.match.params.id).then(res => {
+      this.setState({
+        forfatter: res.forfatter,
+        overskrift: res.overskrift,
+        innhold: res.innhold,
+        tidspunkt: res.tidspunkt,
+        bilde: res.bilde
       });
+      this.setState({ isLoaded: true });
+    });
   }
+
   render() {
     if (this.state.error) {
       return <div>Error: {this.state.error.message}</div>;

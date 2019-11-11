@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import Navbar from "./Navbar.js";
 import Footer from "./Footer.js";
 import axios from "axios";
+import {
+  registerArticle,
+  getAllArticles,
+  updateArticle,
+  deleteArticleDB
+} from "../Service.js";
 
 export default class Register extends Component {
   constructor(props) {
@@ -60,12 +66,10 @@ class RegisterForm extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  // Method for submittiting newscase
+  // Method for submittiting news Article
   submitForm() {
-    console.log("Submitting form");
-
-    axios
-      .post("http://localhost:8080/sak", this.state)
+    console.log("Submitting form register");
+    registerArticle(this.state)
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -215,27 +219,10 @@ class Edit extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:8080/sak").then(res => {
-      const items = res.data;
-      console.log(items);
+    getAllArticles().then(items => {
       this.setState({ items });
       this.setState({ isLoaded: true });
     });
-  }
-
-  submitForm(props) {
-    console.log("Submitting form");
-
-    axios
-      .put("http://localhost:8080/sak/" + props.sak_id, props)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        alert("Din sak ble oppdatert");
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
   }
 
   handleChange = event => {
@@ -285,12 +272,9 @@ class EditCard extends Component<element> {
 
   // Method for editing newscase
   submitForm = e => {
-    console.log("Editing article form");
-    axios
-      .put("http://localhost:8080/sak/" + this.state.sak_id, this.state)
+    console.log("Submitting form");
+    updateArticle(this.state.sak_id, this.state)
       .then(res => {
-        console.log(res);
-        console.log(res.data);
         alert("Din sak ble oppdatert");
         window.location.reload();
       })
@@ -300,22 +284,22 @@ class EditCard extends Component<element> {
   };
 
   deleteArticle() {
-    const sleep = milliseconds => {
-      return new Promise(resolve => setTimeout(resolve, milliseconds));
-    };
-
     if (window.confirm("Er du sikker på at du vil slette denne saken?")) {
-      axios
-        .delete("http://localhost:8080/sak/" + this.state.sak_id)
-        .then(res => {
-          console.log(res);
-        });
-      alert("Saken din er slettet!");
-      sleep(500).then(() => {
+      deleteArticleDB(this.state.sak_id).then(res => {
+        alert("Saken din er slettet!");
         window.location.reload(true);
       });
     } else {
       // Do nothing
+    }
+  }
+
+  activeButton(button, active) {
+    const prefix = "btn btn-secondary";
+    if (button == active) {
+      return prefix + " active";
+    } else {
+      return prefix;
     }
   }
 
@@ -448,7 +432,7 @@ class EditCard extends Component<element> {
                   <br></br>
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <button
-                      class="btn btn-secondary active"
+                      className={this.activeButton(1, this.state.viktighet)}
                       onClick={() => this.setState({ viktighet: 1 })}
                     >
                       <input
@@ -461,7 +445,7 @@ class EditCard extends Component<element> {
                       1
                     </button>
                     <button
-                      class="btn btn-secondary"
+                      className={this.activeButton(2, this.state.viktighet)}
                       onClick={() => this.setState({ viktighet: 2 })}
                     >
                       <input

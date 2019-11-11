@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../styles/LiveFeed.css";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+import { getFrontPageNews } from "../Service";
 
 export default class LiveFeed extends Component {
   constructor(props) {
@@ -14,8 +15,8 @@ export default class LiveFeed extends Component {
   }
 
   componentDidMount() {
-    axios.get("http://localhost:8080/viktighet/1").then(res => {
-      const overskrifter = res.data;
+    getFrontPageNews().then(res => {
+      const overskrifter = [res[0], res[1], res[2], res[3], res[4]];
       this.setState({ overskrifter });
       this.setState({ isLoaded: true });
     });
