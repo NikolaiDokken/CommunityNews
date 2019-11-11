@@ -1,0 +1,125 @@
+#body-container {
+  display: grid;
+  grid-template-columns: repeat(auto, 6);
+}
+
+#live-container {
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+  position: relative;
+}
+#sisteNyheter {
+  padding: 4% 0;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  font-size: 1.5em;
+}
+.dot {
+  height: 2vw;
+  width: 2vw;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: -3.5vw;
+  position: absolute;
+}
+/* Specifying the name for animation keyframes and keyframes themselves */
+@keyframes customticker {
+  0% {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+/* Formatting the full-width ticker wrapper background and font color */
+#tickerwrap {
+  grid-column-start: 2;
+  grid-column-end: 6;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  width: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+/* Formatting the ticker content background, font color, padding and exit state */
+#ticker {
+  display: inline-block;
+  white-space: nowrap;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-name: customticker;
+  animation-name: customticker;
+  -webkit-animation-duration: 20s;
+  animation-duration: 20s;
+}
+
+#news1 {
+  grid-column-start: 1;
+  grid-column-end: 6;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  display: flex;
+  border: 2vw solid #3131;
+  background-color: #3131;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px;
+}
+
+.article1 {
+  flex-basis: 60%;
+}
+.article2 {
+  flex-basis: 40%;
+}
+.article1 #trumpPic {
+  width: 100%;
+  height: auto;
+}
+.article2 #northugPic {
+  width: 100%;
+  height: 100%;
+}
+
+#news2 {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 3;
+  display: flex;
+  border: 2vw solid #3131;
+  background-color: #3131;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px;
+}
+
+#news3 {
+  grid-column-start: 4;
+  grid-column-end: 6;
+  grid-row-start: 3;
+  grid-row-end: 3;
+  display: flex;
+  border: 2vw solid #3131;
+  background-color: #3131;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px;
+}
