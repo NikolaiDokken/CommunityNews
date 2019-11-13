@@ -123,9 +123,9 @@ class RegisterForm extends Component {
             rows="5"
           ></textarea>
         </div>
-        <div class="row mx-5">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Bilde-URL</label>
+        <div class="row mx-auto justify-content-center">
+          <div class="form-group mx-5">
+            <label>Bilde-URL</label>
             <input
               name="bilde"
               onChange={this.handleChange}
@@ -134,7 +134,7 @@ class RegisterForm extends Component {
               placeholder="Lim inn en bilde-url her"
             ></input>
           </div>
-          <div class="form-group mx-auto">
+          <div class="form-group mx-5">
             <label for="exampleInputEmail1">Kategori</label>
             <div class="dropdown">
               <button
@@ -169,7 +169,7 @@ class RegisterForm extends Component {
               </div>
             </div>
           </div>
-          <div class="form-group mx-auto">
+          <div class="form-group mx-5">
             <label for="importancyInput">
               Viktighet:&nbsp;
               {this.state.viktighet +
@@ -182,6 +182,7 @@ class RegisterForm extends Component {
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
               <button
                 class="btn btn-secondary active"
+                style={{ width: "80px" }}
                 onClick={() => this.setState({ viktighet: 1 })}
               >
                 <input
@@ -195,6 +196,7 @@ class RegisterForm extends Component {
               </button>
               <button
                 class="btn btn-secondary"
+                style={{ width: "80px" }}
                 onClick={() => this.setState({ viktighet: 2 })}
               >
                 <input
@@ -342,7 +344,13 @@ class EditCard extends Component<element> {
                 aria-expanded="true"
                 aria-controls="collapseOne"
               >
-                {this.state.overskrift}
+                {window.innerWidth <= 325
+                  ? this.state.overskrift.substring(0, 10) + "..."
+                  : window.innerWidth <= 375
+                  ? this.state.overskrift.substring(0, 17) + "..."
+                  : window.innerWidth <= 414
+                  ? this.state.overskrift.substring(0, 23) + "..."
+                  : this.state.overskrift}
               </button>
             </h2>
             <div class="ml-auto">
@@ -391,8 +399,8 @@ class EditCard extends Component<element> {
                   defaultValue={this.state.innhold}
                 ></textarea>
               </div>
-              <div class="row mx-5">
-                <div class="form-group">
+              <div class="row mx-auto justify-content-center">
+                <div class="form-group mx-5">
                   <label for="exampleInputEmail1">Bilde-URL</label>
                   <input
                     name="bilde"
@@ -458,6 +466,7 @@ class EditCard extends Component<element> {
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <button
                       className={this.activeButton(1, this.state.viktighet)}
+                      style={{ width: "80px" }}
                       onClick={() => this.setState({ viktighet: 1 })}
                     >
                       <input
@@ -471,6 +480,7 @@ class EditCard extends Component<element> {
                     </button>
                     <button
                       className={this.activeButton(2, this.state.viktighet)}
+                      style={{ width: "80px" }}
                       onClick={() => this.setState({ viktighet: 2 })}
                     >
                       <input

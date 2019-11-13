@@ -6,7 +6,7 @@ export default class Navbar extends Component {
   render() {
     return (
       <nav
-        class="navbar navbar-expand-md navbar-dark nav-bg-custom sticky-top"
+        class="navbar navbar-expand-xl navbar-dark nav-bg-custom sticky-top"
         role="navigation"
       >
         <a class="navbar-brand">
