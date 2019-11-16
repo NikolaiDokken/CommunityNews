@@ -1,8 +1,22 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/Navbar.css";
+import { getCategories } from "../Service.js";
 
 export default class Navbar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      kategorier: [],
+      currentKategori: 0
+    };
+  }
+
+  componentDidMount() {
+    getCategories().then(kategorier => {
+      this.setState({ kategorier });
+    });
+  }
   render() {
     return (
       <nav
@@ -43,18 +57,32 @@ export default class Navbar extends Component {
                 role="button"
                 data-toggle="dropdown"
               >
-                KATEGORIER
+                {this.state.currentKategori == 0
+                  ? "KATEGORI"
+                  : this.state.kategorier.find(
+                      kategori =>
+                        kategori.kategori_id == this.state.currentKategori
+                    ).kategori_navn}
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">
-                  Nyheter
-                </a>
-                <a class="dropdown-item" href="#">
-                  Sport
-                </a>
-                <a class="dropdown-item" href="#">
-                  Kultur
-                </a>
+                {this.state.kategorier.map(kategori => (
+                  <NavLink
+                    style={{ color: "black" }}
+                    exact
+                    to={"/kategori/" + kategori.kategori_id}
+                  >
+                    <a
+                      class="dropdown-item"
+                      onClick={() => {
+                        this.setState({
+                          currentKategori: kategori.kategori_id
+                        });
+                      }}
+                    >
+                      {kategori.kategori_navn}
+                    </a>
+                  </NavLink>
+                ))}
               </div>
             </li>
           </ul>

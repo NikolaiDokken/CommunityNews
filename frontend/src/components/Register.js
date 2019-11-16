@@ -1,225 +1,60 @@
 import React, { Component } from "react";
 import Navbar from "./Navbar.js";
 import Footer from "./Footer.js";
-import axios from "axios";
 import {
   registerArticle,
   getAllArticles,
   updateArticle,
-  deleteArticleDB
+  deleteArticleDB,
+  getCategories
 } from "../Service.js";
+import RegisterForm from "./RegisterForm.js";
 
 export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      overskrift: "",
-      innhold: "",
-      bilde: "",
-      kategori: "Kategori",
-      viktighet: 1
+      kategorier: [],
+      isLoaded: false
     };
   }
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  // Method for submittiting newscase
-  submitForm() {
-    console.log("Submitting form");
+  componentDidMount() {
+    getCategories().then(kategorier => {
+      this.setState({ kategorier });
+      this.setState({ isLoaded: true });
+    });
   }
 
   render() {
-    return (
-      <div>
-        <Navbar />
-        <div class="jumbotron jumbotron-fluid">
-          <div class="container">
-            <h1 class="display-4">Registrer en sak!</h1>
-            <p class="lead">
-              Her kan du laste opp en nyhetssak til vår nettside.
-            </p>
+    if (!this.state.isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <div>
+          <Navbar />
+          <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+              <h1 class="display-4">Registrer en sak!</h1>
+              <p class="lead">
+                Her kan du laste opp en nyhetssak til vår nettside.
+              </p>
+            </div>
           </div>
+          <RegisterForm
+            overskrift=""
+            innhold=""
+            bilde=""
+            kategori_id={0}
+            viktighet={1}
+            registrer={true}
+            kategorier={this.state.kategorier}
+          />
+          <Edit kategorier={this.state.kategorier} />
+          <Footer />
         </div>
-        <RegisterForm register={true} />
-        <Edit />
-        <Footer />
-      </div>
-    );
-  }
-}
-
-class RegisterForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      overskrift: "",
-      innhold: "",
-      bilde: "",
-      kategori: "Kategori",
-      viktighet: 1
-    };
-  }
-
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  // Method for submittiting news Article
-  submitForm() {
-    console.log("Submitting form register");
-
-    // Check for form errors
-    if (this.state.overskrift == "") {
-      alert("Artikkelen må ha en overskrift");
-      return;
-    } else if (this.state.innhold.length < 50) {
-      alert("Artikkelens innhold må være lengre enn 50 tegn");
-      return;
-    } else if (this.state.bilde == "") {
-      alert("Artikkelen må ha et bilde");
-      return;
-    } else if (this.state.kategori == "Kategori") {
-      alert("Artikkelen må ha en kategori");
-      return;
+      );
     }
-    registerArticle(this.state)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        alert("Din sak ble lagt til");
-        window.location.hash = "";
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
-  }
-
-  render() {
-    return (
-      <form>
-        <div class="form-group mx-5">
-          <label>Tittel</label>
-          <input
-            name="overskrift"
-            onChange={this.handleChange}
-            type="text"
-            class="form-control"
-            placeholder="Skriv inn tittelen til din sak"
-          ></input>
-          <small id="emailHelp" class="form-text text-muted">
-            Denne vil vises på forsiden.
-          </small>
-        </div>
-        <div class="form-group mx-5">
-          <label>Beskrivelse</label>
-          <textarea
-            name="innhold"
-            onChange={this.handleChange}
-            type="text"
-            class="form-control"
-            placeholder="Skriv inn det innholdet du ønsker vist i saken"
-            rows="5"
-          ></textarea>
-        </div>
-        <div class="row mx-auto justify-content-center">
-          <div class="form-group mx-5">
-            <label>Bilde-URL</label>
-            <input
-              name="bilde"
-              onChange={this.handleChange}
-              type="text"
-              class="form-control"
-              placeholder="Lim inn en bilde-url her"
-            ></input>
-          </div>
-          <div class="form-group mx-5">
-            <label for="exampleInputEmail1">Kategori</label>
-            <div class="dropdown">
-              <button
-                class="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                {this.state.kategori}
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a
-                  class="dropdown-item"
-                  onClick={() => this.setState({ kategori: "Sport" })}
-                >
-                  Sport
-                </a>
-                <a
-                  class="dropdown-item"
-                  onClick={() => this.setState({ kategori: "Religion" })}
-                >
-                  Religion
-                </a>
-                <a
-                  class="dropdown-item"
-                  onClick={() => this.setState({ kategori: "Kultur" })}
-                >
-                  Kultur
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="form-group mx-5">
-            <label for="importancyInput">
-              Viktighet:&nbsp;
-              {this.state.viktighet +
-                " " +
-                (this.state.viktighet == 1
-                  ? "Forsidememateriale"
-                  : "Kategorispesifikk artikkel")}
-            </label>
-            <br></br>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <button
-                class="btn btn-secondary active"
-                style={{ width: "80px" }}
-                onClick={() => this.setState({ viktighet: 1 })}
-              >
-                <input
-                  type="radio"
-                  name="options"
-                  id="option1"
-                  autocomplete="off"
-                  checked
-                ></input>
-                1
-              </button>
-              <button
-                class="btn btn-secondary"
-                style={{ width: "80px" }}
-                onClick={() => this.setState({ viktighet: 2 })}
-              >
-                <input
-                  type="radio"
-                  name="options"
-                  id="option2"
-                  autocomplete="off"
-                ></input>{" "}
-                2
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <button
-          type="button"
-          onClick={this.submitForm.bind(this)}
-          class="btn btn-primary mx-5"
-        >
-          Submit
-        </button>
-      </form>
-    );
   }
 }
 
@@ -229,9 +64,7 @@ class Edit extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      items: [],
-      kategori: "Kategori",
-      viktighet: 1
+      items: []
     };
   }
 
@@ -254,7 +87,7 @@ class Edit extends Component {
           <h1>Rediger/Slett sak</h1>
           <div class="accordion" id="accordionExample">
             {items.map(e => (
-              <EditCard element={e} />
+              <EditCard element={e} kategorier={this.props.kategorier} />
             ))}
           </div>
         </div>
@@ -277,39 +110,7 @@ class EditCard extends Component<element> {
     this.deleteArticle = this.deleteArticle.bind(this);
   }
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  // Method for editing newscase
-  submitForm = e => {
-    console.log("Submitting form");
-
-    // Check for form errors
-    if (this.state.overskrift == "") {
-      alert("Artikkelen må ha en overskrift");
-      return;
-    } else if (this.state.innhold.length < 50) {
-      alert("Artikkelens innhold må være lengre enn 50 tegn");
-      return;
-    } else if (this.state.bilde == "") {
-      alert("Artikkelen må ha et bilde");
-      return;
-    } else if (this.state.kategori == "Kategori") {
-      alert("Artikkelen må ha en kategori");
-      return;
-    }
-
-    updateArticle(this.state.sak_id, this.state)
-      .then(res => {
-        alert("Din sak ble oppdatert");
-        window.location.reload();
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
-  };
-
+  // Handles onclick for delete button
   deleteArticle() {
     if (window.confirm("Er du sikker på at du vil slette denne saken?")) {
       deleteArticleDB(this.state.sak_id).then(res => {
@@ -318,15 +119,6 @@ class EditCard extends Component<element> {
       });
     } else {
       // Do nothing
-    }
-  }
-
-  activeButton(button, active) {
-    const prefix = "btn btn-secondary";
-    if (button == active) {
-      return prefix + " active";
-    } else {
-      return prefix;
     }
   }
 
@@ -372,137 +164,16 @@ class EditCard extends Component<element> {
           data-parent="#accordionExample"
         >
           <div class="card-body">
-            <form>
-              <div class="form-group mx-5">
-                <label for="exampleInputEmail1">Tittel</label>
-                <input
-                  name="overskrift"
-                  onChange={this.handleChange}
-                  type="text"
-                  class="form-control"
-                  placeholder="Skriv inn tittelen til din sak"
-                  defaultValue={this.state.overskrift}
-                ></input>
-                <small id="emailHelp" class="form-text text-muted">
-                  Denne vil vises på forsiden.
-                </small>
-              </div>
-              <div class="form-group mx-5">
-                <label>Beskrivelse</label>
-                <textarea
-                  name="innhold"
-                  onChange={this.handleChange}
-                  type="text"
-                  class="form-control"
-                  placeholder="Skriv inn det innholdet du ønsker vist i saken"
-                  rows="5"
-                  defaultValue={this.state.innhold}
-                ></textarea>
-              </div>
-              <div class="row mx-auto justify-content-center">
-                <div class="form-group mx-5">
-                  <label for="exampleInputEmail1">Bilde-URL</label>
-                  <input
-                    name="bilde"
-                    onChange={this.handleChange}
-                    type="text"
-                    class="form-control"
-                    placeholder="Lim inn en bilde-url her"
-                    defaultValue={this.state.bilde}
-                  ></input>
-                </div>
-                <div class="form-group mx-5">
-                  <label for="exampleInputEmail1">Kategori</label>
-                  <div class="dropdown">
-                    <button
-                      class="btn btn-secondary dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      {this.state.kategori_id == 1
-                        ? "Sport"
-                        : this.state.kategori_id == 2
-                        ? "Religion"
-                        : "Kultur"}
-                    </button>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a
-                        class="dropdown-item"
-                        onClick={() => this.setState({ kategori_id: 1 })}
-                      >
-                        Sport
-                      </a>
-                      <a
-                        class="dropdown-item"
-                        onClick={() => this.setState({ kategori_id: 2 })}
-                      >
-                        Religion
-                      </a>
-                      <a
-                        class="dropdown-item"
-                        onClick={() => this.setState({ kategori_id: 3 })}
-                      >
-                        Kultur
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group mx-5">
-                  <label for="importancyInput">
-                    Viktighet:&nbsp;
-                    {this.state.viktighet +
-                      " " +
-                      (this.state.viktighet == 1
-                        ? "Forsidememateriale"
-                        : "Kategorispesifikk artikkel")}
-                  </label>
-                  <br></br>
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <button
-                      className={this.activeButton(1, this.state.viktighet)}
-                      style={{ width: "80px" }}
-                      onClick={() => this.setState({ viktighet: 1 })}
-                    >
-                      <input
-                        type="radio"
-                        name="options"
-                        id="option1"
-                        autocomplete="off"
-                        checked
-                      ></input>
-                      1
-                    </button>
-                    <button
-                      className={this.activeButton(2, this.state.viktighet)}
-                      style={{ width: "80px" }}
-                      onClick={() => this.setState({ viktighet: 2 })}
-                    >
-                      <input
-                        type="radio"
-                        name="options"
-                        id="option2"
-                        autocomplete="off"
-                      ></input>
-                      2
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => this.submitForm()}
-                class="btn btn-primary mx-5"
-              >
-                Submit
-              </button>
-            </form>
+            <RegisterForm
+              overskrift={this.state.overskrift}
+              innhold={this.state.innhold}
+              bilde={this.state.bilde}
+              kategori_id={this.state.kategori_id}
+              viktighet={this.state.viktighet}
+              registrer={false}
+              sak_id={this.state.sak_id}
+              kategorier={this.props.kategorier}
+            />
           </div>
         </div>
       </div>

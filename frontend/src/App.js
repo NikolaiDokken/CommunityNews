@@ -12,6 +12,7 @@ export default class App extends Component {
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/sak/:id" component={Article} />
+        <Route exact path="/kategori/:id" component={Home} />
       </HashRouter>
     );
   }

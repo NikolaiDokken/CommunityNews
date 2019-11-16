@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/News.css";
-import { getFrontPageNews } from "../Service.js";
+import { getFrontPageNews, getCategoryArticles } from "../Service.js";
 
 export default class News extends Component {
   constructor(props) {
@@ -14,10 +14,20 @@ export default class News extends Component {
   }
 
   componentDidMount() {
-    getFrontPageNews().then(items => {
-      this.setState({ items });
-      this.setState({ isLoaded: true });
-    });
+    console.log("kategorien er" + this.props.kategori);
+    if (this.props.kategori === undefined) {
+      getFrontPageNews().then(items => {
+        this.setState({ items });
+        this.setState({ isLoaded: true });
+      });
+      console.log("vanlige nyheter");
+    } else {
+      getCategoryArticles(this.props.kategori).then(items => {
+        this.setState({ items });
+        this.setState({ isLoaded: true });
+      });
+      console.log("kategoribasert");
+    }
   }
 
   render() {

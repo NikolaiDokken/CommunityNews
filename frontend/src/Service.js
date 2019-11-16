@@ -14,6 +14,15 @@ export function getFrontPageNews() {
   });
 }
 
+export function getCategoryArticles(kategori_id) {
+  return axios
+    .get("http://localhost:8080/kategori/" + kategori_id)
+    .then(res => {
+      console.log(res.data);
+      return res.data;
+    });
+}
+
 export function getArticle(id) {
   return axios.get("http://localhost:8080/sak/" + id).then(res => {
     const items = res.data[0];
@@ -55,5 +64,12 @@ export function deleteArticleDB(id) {
   return axios.delete("http://localhost:8080/sak/" + id).then(res => {
     console.log(res);
     return;
+  });
+}
+
+export function getCategories() {
+  return axios.get("http://localhost:8080/kategori").then(res => {
+    console.log(res.data);
+    return res.data;
   });
 }

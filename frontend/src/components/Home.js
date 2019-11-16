@@ -7,12 +7,14 @@ import Footer from "./Footer.js";
 import News from "./News";
 
 export default class Home extends Component {
+
   render() {
+    console.log();
     return (
       <div className="home-container bg-light">
         <Navbar />
         <LiveFeed />
-        <News />
+        <News kategori={this.props.match.params.id} />
         <Footer />
       </div>
     );

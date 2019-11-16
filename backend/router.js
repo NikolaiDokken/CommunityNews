@@ -93,6 +93,33 @@ module.exports = function(app, pool) {
     });
   });
 
+  // GET saker gitt kategori
+  app.get("/kategori/:kategori_id", (req, res) => {
+    console.log("Fikk request fra klient");
+    pool.getConnection((err, connection) => {
+      console.log("Koblet til databasen");
+      if (err) {
+        console.log("Feil ved kobling til databasen");
+        res.json({ error: "feil ved oppkobling" });
+      } else {
+        connection.query(
+          "SELECT * FROM sak JOIN kategori USING(kategori_id) WHERE kategori_id=? ORDER BY tidspunkt DESC LIMIT 20",
+          req.params.kategori_id,
+          (err, rows) => {
+            connection.release();
+            if (err) {
+              console.log(err);
+              res.json({ error: "error querying" });
+            } else {
+              console.log(rows);
+              res.json(rows);
+            }
+          }
+        );
+      }
+    });
+  });
+
   // POST ny sak, kan testes med følgende på POSTMAN:
   /*
     { 
@@ -117,11 +144,11 @@ module.exports = function(app, pool) {
           req.body.overskrift,
           req.body.innhold,
           req.body.bilde,
-          req.body.kategori,
+          req.body.kategori_id,
           req.body.viktighet
         ];
         connection.query(
-          "insert into sak (overskrift, innhold, bilde, kategori_id, viktighet) values (?,?,?, (SELECT kategori_id FROM kategori WHERE kategori_navn=?),?)",
+          "insert into sak (overskrift, innhold, bilde, kategori_id, viktighet) values (?,?,?,?,?)",
           val,
           err => {
             if (err) {
@@ -197,6 +224,29 @@ module.exports = function(app, pool) {
             }
           }
         );
+      }
+    });
+  });
+
+  // GET alle kategorier i kategori
+  app.get("/kategori", (req, res) => {
+    console.log("Fikk request fra klient");
+    pool.getConnection((err, connection) => {
+      console.log("Connected to database");
+      if (err) {
+        console.log("Feil ved kobling til databasen");
+        res.json({ error: "feil ved ved oppkobling" });
+      } else {
+        connection.query("SELECT * FROM kategori", (err, rows) => {
+          connection.release();
+          if (err) {
+            console.log(err);
+            res.json({ error: "error querying" });
+          } else {
+            console.log(rows);
+            res.json(rows);
+          }
+        });
       }
     });
   });
