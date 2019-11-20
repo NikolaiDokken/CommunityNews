@@ -31,8 +31,8 @@ pages:
     - run_tests
   script:
     - mkdir .public
-    - cp -r dao/coverage/* .public
-    - mv .public public
+    - cp -r coverage/* .public
+    - mv .public ../public
   artifacts:
     paths:
       - public
