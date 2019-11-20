@@ -1,16 +1,16 @@
-INSERT INTO `kategori` (`
-kategori_id`,
-`kategori_navn
-`) VALUES
+INSERT INTO kategori (
+kategori_id,
+kategori_navn
+) VALUES
 (1, 'Sport'),
 (2, 'Religion'),
 (3, 'Kultur'),
 (4, 'Teknologi');
 
-INSERT INTO `sak` (`
-sak_id`,
-`forfatter
-`, `overskrift`, `innhold`, `tidspunkt`, `bilde`, `kategori_id`, `viktighet`) VALUES
+INSERT INTO sak (
+sak_id,
+forfatter
+, overskrift, innhold, tidspunkt, bilde, kategori_id, viktighet) VALUES
 (10, 'Nikolai Roede Dokken', 'Rik askergutt lager nettside - tjener milliarder', 'Kjent askergutt(20) vinner i lotto og lager nå nettsider for de som ønsker. Sist laget han nettside for det politiske partiet MDG. De utbetalte en stor sum for denne, da det var en oppfatning at nettopp nettsiden sørget for den store oppslutningen i 2019. Selv vant gutten i lotto i mars , og har egentlig ikke særlig bruk for pengene. Interessen for web-utvikling kommer av at gutten selv studerte Dataingeniør i Trondheim frem til han vant i Lotto.', '2019-11-11 15:41:33', 'https://vgc.no/drfront3/images/b75095955af58653c5b0aeff959b5ca0.jpg', 3, 1),
 (11, NULL, 'Køene blir stadig lengre ved oslofjordtunellen', 'Her er det jævelig mye content som du må lese for at du skal skjønne noe som helst av hva denne saken inneholder. Heldigvis er dette en sykt interessant artikkel så det er ikke noe problem å henge med. \n\nKasper Gundersen er fortsatt på jakt etter fremtidige Fru Gundersen.', '2019-11-11 15:45:22', 'https://dbstatic.no/70968195.jpg?imageId=70968195&width=1024&height=615', 1, 1),
 (19, NULL, 'Etter uttallige forsøk klarte Nikolai endelig å fikse \"Slett sak\" knappen', 'Nikolai kan nå oppdatere saker på localhost:3000', '2019-11-11 14:32:10', 'https://dbstatic.no/71794114.jpg?imageId=71794114&width=1024&height=615', 3, 1),
