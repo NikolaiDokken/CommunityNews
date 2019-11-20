@@ -73,3 +73,10 @@ export function getCategories() {
     return res.data;
   });
 }
+
+export function getSearch(searchString) {
+  return axios.get("http://localhost:8080/sok/" + searchString).then(res => {
+    console.log(res.data);
+    return res.data;
+  });
+}

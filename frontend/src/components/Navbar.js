@@ -1,31 +1,61 @@
+// @flow
+
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/Navbar.css";
-import { getCategories } from "../Service.js";
+import { getCategories, getSearch } from "../Service.js";
 
 export default class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       kategorier: [],
-      currentKategori: 0
+      currentKategori: 0,
+      searchResults: []
     };
   }
 
   componentDidMount() {
     getCategories().then(kategorier => {
       this.setState({ kategorier });
+      if (this.props.kategori !== undefined) {
+        this.setState({ currentKategori: this.props.kategori });
+      }
     });
   }
+
+  onSearch = event => {
+    var search = event.target.value;
+    console.log(search);
+    if (search.length > 0 && search.length % 2 == 0) {
+      getSearch(search).then(searchResults => {
+        this.setState({ searchResults });
+      });
+    }
+  };
+
   render() {
     return (
       <nav
-        class="navbar navbar-expand-xl navbar-dark nav-bg-custom sticky-top"
+        class="navbar navbar-expand-xl navbar-dark nav-bg-custom sticky-top py-0"
         role="navigation"
       >
-        <a class="navbar-brand">
+        <a class="navbar-brand my-0">
           <NavLink className="nav-link" exact to="/">
-            ING NYTT
+            <div className="row">
+              <div className="col pr-0">Ing</div>
+              <div
+                className="col"
+                style={{
+                  backgroundColor: "#ffa31a",
+                  borderRadius: "5px",
+                  padding: "2px",
+                  color: "black"
+                }}
+              >
+                Nytt
+              </div>
+            </div>
           </NavLink>
         </a>
         <button
@@ -67,6 +97,11 @@ export default class Navbar extends Component {
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 {this.state.kategorier.map(kategori => (
                   <NavLink
+                    onClick={() => {
+                      window.location.hash =
+                        "/kategori/" + kategori.kategori_id;
+                      window.location.reload();
+                    }}
                     style={{ color: "black" }}
                     exact
                     to={"/kategori/" + kategori.kategori_id}
@@ -92,7 +127,28 @@ export default class Navbar extends Component {
               type="search"
               placeholder="Søk..."
               aria-label="Search"
+              style={{ height: "30px" }}
+              onChange={this.onSearch}
             ></input>
+            <div className="searchResults" style={{ display: "block" }}>
+              {this.state.searchResults.map((result, i) => (
+                <NavLink
+                  className="p-1 w-100"
+                  style={
+                    i % 2 == 0
+                      ? {
+                          backgroundColor: "#808080",
+                          fontSize: "15px"
+                        }
+                      : { color: "black" }
+                  }
+                  exact
+                  to={"/sak/" + result.sak_id}
+                >
+                  {result.overskrift.substring(0, 35) + "...\n"}
+                </NavLink>
+              ))}
+            </div>
             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
               Søk
             </button>

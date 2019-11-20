@@ -9,7 +9,7 @@
 .custom-nav-text {
   text-decoration: none;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light";
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .nav-bg-custom {
@@ -27,4 +27,14 @@
 
 .navbar-dark .navbar-nav > .nav-item > a {
   color: #ffffff; /* <—– change your color here*/
+}
+
+.searchResults {
+  transform: translateY(40px);
+  top: 6px;
+  width: 243px;
+  background-color: white;
+  position: absolute;
+  z-index: 100;
+  border-radius: 5px;
 }

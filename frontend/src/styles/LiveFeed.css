@@ -31,6 +31,22 @@
   background: red;
 }
 
+.marquee div::after {
+  opacity: 1;
+  animation: fade 2s linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 .marquee p {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light";
   width: 150%;
