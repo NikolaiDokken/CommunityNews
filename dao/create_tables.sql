@@ -1,6 +1,12 @@
 DROP TABLE IF EXISTS sak;
 DROP TABLE IF EXISTS kategori;
 
+SET SQL_MODE
+="NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone
+="+00:00";
+
 CREATE TABLE sak
 (
   sak_id int(11) NOT NULL,
@@ -16,7 +22,7 @@ CREATE TABLE sak
   (11) NOT NULL,
   viktighet int
   (11) NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
   CREATE TABLE kategori
   (
