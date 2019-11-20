@@ -8,6 +8,7 @@ services:
 variables:
   MYSQL_DATABASE: testDB
   MYSQL_ROOT_PASSWORD: password
+  DOCKER_TLS_CERTDIR: ""
 
 # Install node libraries
 before_script:
