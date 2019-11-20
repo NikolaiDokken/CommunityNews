@@ -1,17 +1,27 @@
 import axios from "axios";
 
 export function getAllArticles() {
-  return axios.get("http://localhost:8080/sak").then(res => {
-    console.log(res.data);
-    return res.data;
-  });
+  return axios
+    .get("http://localhost:8080/sak")
+    .then(res => {
+      console.log(res.data);
+      return res.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 export function getFrontPageNews() {
-  return axios.get("http://localhost:8080/viktighet/1").then(res => {
-    console.log(res.data);
-    return res.data;
-  });
+  return axios
+    .get("http://localhost:8080/viktighet/1")
+    .then(res => {
+      console.log(res.data);
+      return res.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 export function getCategoryArticles(kategori_id) {
@@ -20,15 +30,23 @@ export function getCategoryArticles(kategori_id) {
     .then(res => {
       console.log(res.data);
       return res.data;
+    })
+    .catch(error => {
+      console.log(error);
     });
 }
 
 export function getArticle(id) {
-  return axios.get("http://localhost:8080/sak/" + id).then(res => {
-    const items = res.data[0];
-    console.log(res.data[0]);
-    return res.data[0];
-  });
+  return axios
+    .get("http://localhost:8080/sak/" + id)
+    .then(res => {
+      const items = res.data[0];
+      console.log(res.data[0]);
+      return res.data[0];
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 export function registerArticle(state) {
@@ -61,22 +79,37 @@ export function updateArticle(id, props) {
 }
 
 export function deleteArticleDB(id) {
-  return axios.delete("http://localhost:8080/sak/" + id).then(res => {
-    console.log(res);
-    return;
-  });
+  return axios
+    .delete("http://localhost:8080/sak/" + id)
+    .then(res => {
+      console.log(res);
+      return;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 export function getCategories() {
-  return axios.get("http://localhost:8080/kategori").then(res => {
-    console.log(res.data);
-    return res.data;
-  });
+  return axios
+    .get("http://localhost:8080/kategori")
+    .then(res => {
+      console.log(res.data);
+      return res.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 export function getSearch(searchString) {
-  return axios.get("http://localhost:8080/sok/" + searchString).then(res => {
-    console.log(res.data);
-    return res.data;
-  });
+  return axios
+    .get("http://localhost:8080/sok/" + searchString)
+    .then(res => {
+      console.log(res.data);
+      return res.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }

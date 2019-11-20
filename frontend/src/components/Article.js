@@ -51,9 +51,14 @@ export default class Article extends Component<{
             <h1>{this.state.overskrift}</h1>
             <p id="info-text">
               Av {this.state.forfatter} |{" "}
-              {this.state.tidspunkt.substring(0, 10) +
+              {" " +
+                this.state.tidspunkt.substring(8, 10) +
+                "." +
+                this.state.tidspunkt.substring(5, 7) +
+                "." +
+                this.state.tidspunkt.substring(0, 4) +
                 " Kl. " +
-                this.state.tidspunkt.substring(11, 19)}
+                this.state.tidspunkt.substring(11, 16)}
             </p>
             <p className="mx-auto">{this.state.innhold}</p>
           </div>

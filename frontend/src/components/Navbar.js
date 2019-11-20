@@ -31,6 +31,8 @@ export default class Navbar extends Component {
       getSearch(search).then(searchResults => {
         this.setState({ searchResults });
       });
+    } else {
+      this.setState({ searchResults: [] });
     }
   };
 
@@ -132,21 +134,29 @@ export default class Navbar extends Component {
             ></input>
             <div className="searchResults" style={{ display: "block" }}>
               {this.state.searchResults.map((result, i) => (
-                <NavLink
-                  className="p-1 w-100"
+                <div
                   style={
                     i % 2 == 0
                       ? {
                           backgroundColor: "#808080",
                           fontSize: "15px"
                         }
-                      : { color: "black" }
+                      : { backgroundColor: "#d3d3d3" }
                   }
-                  exact
-                  to={"/sak/" + result.sak_id}
                 >
-                  {result.overskrift.substring(0, 35) + "...\n"}
-                </NavLink>
+                  <NavLink
+                    className="p-1 w-100"
+                    exact
+                    to={"/sak/" + result.sak_id}
+                    style={i % 2 == 0 ? { color: "white" } : { color: "black" }}
+                    onClick={() => {
+                      window.location.hash = "/sak/" + result.sak_id;
+                      window.location.reload();
+                    }}
+                  >
+                    {result.overskrift.substring(0, 30) + "...\n"}
+                  </NavLink>
+                </div>
               ))}
             </div>
             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">

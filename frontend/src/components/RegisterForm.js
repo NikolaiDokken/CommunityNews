@@ -215,17 +215,21 @@ export default class RegisterForm extends Component {
               </button>
             </div>
           </div>
+          <div className="form-group mx-5">
+            <label>Legg til din sak</label>
+            <br></br>
+            <button
+              type="button"
+              onClick={
+                this.state.registrer ? this.submitRegister : this.submitUpdate
+              }
+              class="btn btn-primary"
+              style={{ height: "40px" }}
+            >
+              Submit
+            </button>
+          </div>
         </div>
-
-        <button
-          type="button"
-          onClick={
-            this.state.registrer ? this.submitRegister : this.submitUpdate
-          }
-          class="btn btn-primary mx-5"
-        >
-          Submit
-        </button>
       </form>
     );
   }

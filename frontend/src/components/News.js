@@ -18,17 +18,23 @@ export default class News extends Component {
   componentDidMount() {
     console.log("kategorien er" + this.props.kategori);
     if (this.props.kategori === undefined) {
-      getFrontPageNews().then(items => {
-        this.setState({ items });
-        this.setState({ isLoaded: true });
-      });
-      console.log("vanlige nyheter");
+      getFrontPageNews()
+        .then(items => {
+          this.setState({ items });
+          this.setState({ isLoaded: true });
+        })
+        .catch(error => {
+          this.setState({ error });
+        });
     } else {
-      getCategoryArticles(this.props.kategori).then(items => {
-        this.setState({ items });
-        this.setState({ isLoaded: true });
-      });
-      console.log("kategoribasert");
+      getCategoryArticles(this.props.kategori)
+        .then(items => {
+          this.setState({ items });
+          this.setState({ isLoaded: true });
+        })
+        .catch(error => {
+          this.setState({ error });
+        });
     }
   }
 
@@ -66,8 +72,13 @@ function newsCard(props) {
           <p class="card-text">{props.innhold.substring(0, 80) + "..."}</p>
           <p class="card-text">
             <small class="text-muted">
-              Sist oppdatert:{" "}
-              {props.tidspunkt.substring(0, 10) +
+              Sist oppdatert:
+              {" " +
+                props.tidspunkt.substring(8, 10) +
+                "." +
+                props.tidspunkt.substring(5, 7) +
+                "." +
+                props.tidspunkt.substring(0, 4) +
                 " Kl. " +
                 props.tidspunkt.substring(11, 16)}
             </small>
