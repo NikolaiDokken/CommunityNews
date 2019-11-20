@@ -1,41 +1,50 @@
 const Dao = require("./dao.js");
 
-module.exports = class NewsTest extends Dao {
+module.exports = class News extends Dao {
   getAll(callback) {
-    super.query("select navn, alder, adresse from person", [], callback);
+    super.query("SELECT * FROM sak ORDER BY tidspunkt", [], callback);
   }
 
   getOne(id, callback) {
     super.query(
-      "select navn, alder, adresse from person where id=?",
+      "SELECT forfatter, overskrift, innhold, tidspunkt, bilde, kategori_navn, viktighet FROM sak JOIN kategori USING(kategori_id) WHERE sak_id=?",
       [id],
       callback
     );
   }
 
   createOne(json, callback) {
-    var val = [json.navn, json.adresse, json.alder];
+    var val = [
+      json.overskrift,
+      json.innhold,
+      json.bilde,
+      json.kategori_id,
+      json.viktighet
+    ];
     super.query(
-      "insert into person (navn,adresse,alder) values (?,?,?)",
+      "insert into sak (overskrift, innhold, bilde, kategori_id, viktighet) values (?,?,?,?,?)",
       val,
       callback
     );
   }
 
   updateOne(id, json, callback) {
-    var val = [json.navn, json.adresse, json.alder, id];
+    var val = [
+      json.overskrift,
+      json.innhold,
+      json.bilde,
+      json.kategori_id,
+      json.viktighet,
+      id
+    ];
     super.query(
-      "UPDATE person SET navn=?, adresse=?, alder=? WHERE id=?",
+      "UPDATE sak SET overskrift=?, innhold=?, bilde=?, kategori_id=?, viktighet=? WHERE sak_id=?",
       val,
       callback
     );
   }
 
   deleteOne(id, callback) {
-    super.query(
-      "DELETE FROM person WHERE id=?",
-      [id],
-      callback
-    );
+    super.query("DELETE FROM sak WHERE sak_id=?", [id], callback);
   }
 };

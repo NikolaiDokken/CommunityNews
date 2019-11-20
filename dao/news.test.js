@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 
-const PersonDao = require("./news.js");
+const News = require("./news.js");
 const runsqlfile = require("./runsqlfile.js");
 
 // GitLab CI Pool
@@ -14,7 +14,7 @@ var pool = mysql.createPool({
   multipleStatements: true
 });
 
-let personDao = new PersonDao(pool);
+let news = new News(pool);
 
 beforeAll(done => {
   runsqlfile("dao/create_tables.sql", pool, () => {
@@ -26,32 +26,21 @@ afterAll(() => {
   pool.end();
 });
 
-test("get one person from db", done => {
+test("get an article from db", done => {
   function callback(status, data) {
     console.log(
       "Test callback: status=" + status + ", data=" + JSON.stringify(data)
     );
     expect(data.length).toBe(1);
-    expect(data[0].navn).toBe("Hei Sveisen");
+    expect(data[0].forfatter).toBe("Nikolai Roede Dokken");
+    expect(data[0].overskrift).toBe("overskrift1");
     done();
   }
 
-  personDao.getOne(1, callback);
+  news.getOne(1, callback);
 });
 
-test("get unknown person from db", done => {
-  function callback(status, data) {
-    console.log(
-      "Test callback: status=" + status + ", data=" + JSON.stringify(data)
-    );
-    expect(data.length).toBe(0);
-    done();
-  }
-
-  personDao.getOne(0, callback);
-});
-
-test("add person to db", done => {
+test("add article to db", done => {
   function callback(status, data) {
     console.log(
       "Test callback: status=" + status + ", data=" + JSON.stringify(data)
@@ -60,26 +49,31 @@ test("add person to db", done => {
     done();
   }
 
-  personDao.createOne(
-    { navn: "Nils Nilsen", alder: 34, adresse: "Gata 3" },
+  news.createOne(
+    {
+      overskrift: "Ny overskrift",
+      innhold: "nytt innhold",
+      bilde: "bildeurl.com",
+      kategori_id: 3,
+      viktighet: 1
+    },
     callback
   );
 });
 
-test("get all persons from db", done => {
+test("get all articles from db", done => {
   function callback(status, data) {
     console.log(
       "Test callback: status=" + status + ", data.length=" + data.length
     );
-    expect(data.length).toBeGreaterThanOrEqual(2);
+    expect(data.length).toBeGreaterThanOrEqual(5);
     done();
   }
 
-  personDao.getAll(callback);
+  news.getAll(callback);
 });
 
-// Test update person
-test("update a person in the database", done => {
+test("update an article in the database", done => {
   function callback(status, data) {
     console.log(
       "Test callback: status=" + status + ", data.length=" + data.length
@@ -88,25 +82,27 @@ test("update a person in the database", done => {
     done();
   }
 
-  personDao.updateOne(
-    1,
-    { navn: "Nikolai Dokken", alder: 20, adresse: "Holtermanns veg 31B" },
+  news.updateOne(
+    5,
+    {
+      overskrift: "Oppdatert overskrift",
+      innhold: "oppdatert innhold",
+      bilde: "Oppdatert bilde",
+      kategori_id: 1,
+      viktighet: 1
+    },
     callback
   );
 });
 
-// Test delete person
-test("delete a person in the database", done => {
+test("delete an article in the database", done => {
   function callback(status, data) {
     console.log(
       "Test callback: status=" + status + ", data.length=" + data.length
     );
-    // Skal egt vært: expect(data.affectedRows).toBeGreaterThanOrEqual(1);
-    // Endrer for å få pipeline til å feile, som skal gi slack melding
-    // expect(data.length).toBe(1);
     expect(data.affectedRows).toBeGreaterThanOrEqual(1);
     done();
   }
 
-  personDao.deleteOne(1, callback);
+  news.deleteOne(1, callback);
 });
