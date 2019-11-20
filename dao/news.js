@@ -5,6 +5,10 @@ module.exports = class News extends Dao {
     super.query("SELECT * FROM sak ORDER BY tidspunkt", [], callback);
   }
 
+  getAllCategories(callback) {
+    super.query("SELECT * FROM kategori", [], callback);
+  }
+
   getOne(id, callback) {
     super.query(
       "SELECT forfatter, overskrift, innhold, tidspunkt, bilde, kategori_navn, viktighet FROM sak JOIN kategori USING(kategori_id) WHERE sak_id=?",

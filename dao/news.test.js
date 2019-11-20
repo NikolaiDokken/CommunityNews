@@ -106,3 +106,15 @@ test("delete an article in the database", done => {
 
   news.deleteOne(1, callback);
 });
+
+test("get all categories from db", done => {
+  function callback(status, data) {
+    console.log(
+      "Test callback: status=" + status + ", data.length=" + data.length
+    );
+    expect(data.length).toBeGreaterThanOrEqual(4);
+    done();
+  }
+
+  news.getAllCategories(callback);
+});
