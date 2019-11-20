@@ -1,14 +1,16 @@
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
 .navbar-brand .nav-link {
   color: #ffffff;
-  font-family: "HelveticaNeue-Bold", "Helvetica Neue Bold";
+  font-family: "HelveticaNeue-Bold", "Helvetica Neue Bold", "Helvetica Neue",
+    "Roboto", sans-serif;
   font-size: 20px;
 }
 
 .custom-nav-text {
   text-decoration: none;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light";
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Roboto",
+    sans-serif;
   font-size: 20px;
 }
 

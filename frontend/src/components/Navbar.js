@@ -26,14 +26,18 @@ export default class Navbar extends Component {
 
   onSearch = event => {
     var search = event.target.value;
-    console.log(search);
-    if (search.length > 0 && search.length % 2 == 0) {
+    if (search.length > 0) {
       getSearch(search).then(searchResults => {
         this.setState({ searchResults });
       });
     } else {
       this.setState({ searchResults: [] });
     }
+  };
+
+  clear = event => {
+    event.target.value = "";
+    this.setState({ searchResults: [] });
   };
 
   render() {
@@ -131,6 +135,7 @@ export default class Navbar extends Component {
               aria-label="Search"
               style={{ height: "30px" }}
               onChange={this.onSearch}
+              onBlur={this.clear}
             ></input>
             <div className="searchResults" style={{ display: "block" }}>
               {this.state.searchResults.map((result, i) => (
