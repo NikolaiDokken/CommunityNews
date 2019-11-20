@@ -8,6 +8,7 @@ import {
   deleteArticleDB,
   getCategories
 } from "../Service.js";
+import "../styles/RegisterForm.css";
 
 export default class RegisterForm extends Component {
   constructor(props) {
@@ -158,9 +159,11 @@ export default class RegisterForm extends Component {
                     ).kategori_navn}
               </button>
               <div
-                class="dropdown-menu"
-                style={{ overflowY: "auto", height: "80px" }}
+                class="dropdown-menu category-box"
                 aria-labelledby="dropdownMenuButton"
+                style={
+                  this.state.registrer ? { height: "80px" } : { height: "50px" }
+                }
               >
                 {this.state.kategorier.map(kategori => (
                   <a
