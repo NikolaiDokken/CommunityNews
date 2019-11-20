@@ -22,7 +22,7 @@ run_tests:
     - npm test
   artifacts:
     paths:
-      - coverage/
+      - dao/coverage/
 
 # Publish coverage report on gitlab-pages
 pages:
