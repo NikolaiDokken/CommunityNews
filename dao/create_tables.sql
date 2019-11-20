@@ -3,7 +3,6 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 CREATE TABLE kategori (
   kategori_id int(11) NOT NULL,
   kategori_navn varchar(30) NOT NULL
@@ -14,7 +13,7 @@ CREATE TABLE sak (
   forfatter varchar(50) DEFAULT NULL,
   overskrift varchar(200) NOT NULL,
   innhold text NOT NULL,
-  tidspunkt datetime NOT NULL DEFAULT DEFAULT '2019-11-20 20:15:00',
+  tidspunkt datetime NOT NULL DEFAULT '2019-11-20 20:15:00',
   bilde text NOT NULL,
   kategori_id int(11) NOT NULL,
   viktighet int(11) NOT NULL
@@ -46,7 +45,6 @@ ALTER TABLE kategori
 ALTER TABLE sak
   MODIFY sak_id int(11) NOT NULL AUTO_INCREMENT;
 
---
 ALTER TABLE sak
-  ADD CONSTRAINT sak_ibfk_1 FOREIGN KEY (kategori_id) REFERENCES kategori (kategori_id);
+  ADD CONSTRAINT FOREIGN KEY (kategori_id) REFERENCES kategori (kategori_id);
 COMMIT;
