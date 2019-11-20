@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS sak;
 DROP TABLE IF EXISTS kategori;
 
-CREATE TABLE 'sak'
+CREATE TABLE sak
 (
   sak_id int(11) NOT NULL,
   forfatter varchar(50) DEFAULT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE 'sak'
   (11) NOT NULL
 );
 
-  CREATE TABLE 'kategori'
+  CREATE TABLE kategori
   (
     kategori_id int(11) NOT NULL,
     kategori_navn varchar(30) NOT NULL
