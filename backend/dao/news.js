@@ -5,13 +5,35 @@ module.exports = class News extends Dao {
     super.query("SELECT * FROM sak ORDER BY tidspunkt", [], callback);
   }
 
-  getAllCategories(callback) {
-    super.query("SELECT * FROM kategori", [], callback);
+  getAllByImportance(importance, callback) {
+    super.query(
+      "SELECT sak_id, overskrift, innhold, bilde, tidspunkt FROM sak WHERE viktighet=? ORDER BY tidspunkt DESC LIMIT 20",
+      [importance],
+      callback
+    );
+  }
+
+  getAllByCategory(category_id, callback) {
+    super.query(
+      "SELECT sak_id, overskrift, innhold, bilde, tidspunkt FROM sak WHERE kategori_id=? ORDER BY tidspunkt DESC LIMIT 20",
+      [category_id],
+      callback
+    );
+  }
+
+  getAllBySearch(search, callback) {
+    super.query(
+      "SELECT sak_id, overskrift FROM sak WHERE overskrift LIKE '%" +
+        search +
+        "%'",
+      [],
+      callback
+    );
   }
 
   getOne(id, callback) {
     super.query(
-      "SELECT forfatter, overskrift, innhold, tidspunkt, bilde, kategori_navn, viktighet FROM sak JOIN kategori USING(kategori_id) WHERE sak_id=?",
+      "SELECT forfatter, overskrift, innhold, tidspunkt, bilde, kategori_navn, viktighet, visninger FROM sak JOIN kategori USING(kategori_id) WHERE sak_id=?",
       [id],
       callback
     );
@@ -44,6 +66,14 @@ module.exports = class News extends Dao {
     super.query(
       "UPDATE sak SET overskrift=?, innhold=?, bilde=?, kategori_id=?, viktighet=? WHERE sak_id=?",
       val,
+      callback
+    );
+  }
+
+  updateOneViews(sak_id, callback) {
+    super.query(
+      "UPDATE sak SET visninger=(visninger + 1) WHERE sak_id=?",
+      [sak_id],
       callback
     );
   }

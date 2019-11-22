@@ -1,4 +1,4 @@
-module.exports = function(app, pool) {
+module.exports = function(app, pool, news, category, comment) {
   // BACKEND CONFIG
   app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -15,351 +15,109 @@ module.exports = function(app, pool) {
 
   // GET alle saker i sak
   app.get("/sak", (req, res) => {
-    console.log("Fikk request fra klient");
-    pool.getConnection((err, connection) => {
-      console.log("Connected to database");
-      if (err) {
-        console.log("Feil ved kobling til databasen");
-        res.json({ error: "feil ved ved oppkobling" });
-      } else {
-        connection.query(
-          "SELECT * FROM sak ORDER BY tidspunkt",
-          (err, rows) => {
-            connection.release();
-            if (err) {
-              console.log(err);
-              res.json({ error: "error querying" });
-            } else {
-              console.log(rows);
-              res.json(rows);
-            }
-          }
-        );
-      }
+    console.log("/sak: fikk request fra klient");
+    news.getAll((status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
   // GET sak gitt id
-  app.get("/sak/:SakID", (req, res) => {
-    console.log("Fikk request fra klient");
-    pool.getConnection((err, connection) => {
-      console.log("Koblet til databasen");
-      if (err) {
-        console.log("Feil ved kobling til databasen");
-        res.json({ error: "feil ved oppkobling" });
-      } else {
-        connection.query(
-          "SELECT forfatter, overskrift, innhold, tidspunkt, bilde, kategori_navn, visninger FROM sak JOIN kategori USING(kategori_id) WHERE sak_id=?",
-          req.params.SakID,
-          (err, rows) => {
-            connection.release();
-            if (err) {
-              console.log(err);
-              res.json({ error: "error querying" });
-            } else {
-              console.log(rows);
-              res.json(rows);
-            }
-          }
-        );
-      }
+  app.get("/sak/:sak_id", (req, res) => {
+    console.log("/sak/:sak_id: fikk request fra klient");
+    news.getOne(req.params.sak_id, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
   // GET saker gitt viktighet
   app.get("/viktighet/:viktighet", (req, res) => {
-    console.log("Fikk request fra klient");
-    pool.getConnection((err, connection) => {
-      console.log("Koblet til databasen");
-      if (err) {
-        console.log("Feil ved kobling til databasen");
-        res.json({ error: "feil ved oppkobling" });
-      } else {
-        connection.query(
-          "SELECT * FROM sak JOIN kategori USING(kategori_id) WHERE viktighet=? ORDER BY tidspunkt DESC LIMIT 20",
-          req.params.viktighet,
-          (err, rows) => {
-            connection.release();
-            if (err) {
-              console.log(err);
-              res.json({ error: "error querying" });
-            } else {
-              console.log(rows);
-              res.json(rows);
-            }
-          }
-        );
-      }
+    console.log("/viktighet/:viktighet: Fikk request fra klient");
+    news.getAllByImportance(req.params.viktighet, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
   // GET saker gitt kategori
   app.get("/kategori/:kategori_id", (req, res) => {
-    console.log("Fikk request fra klient");
-    pool.getConnection((err, connection) => {
-      console.log("Koblet til databasen");
-      if (err) {
-        console.log("Feil ved kobling til databasen");
-        res.json({ error: "feil ved oppkobling" });
-      } else {
-        connection.query(
-          "SELECT * FROM sak JOIN kategori USING(kategori_id) WHERE kategori_id=? ORDER BY tidspunkt DESC LIMIT 20",
-          req.params.kategori_id,
-          (err, rows) => {
-            connection.release();
-            if (err) {
-              console.log(err);
-              res.json({ error: "error querying" });
-            } else {
-              console.log(rows);
-              res.json(rows);
-            }
-          }
-        );
-      }
+    console.log("/kategori/:kategori_id: fikk request fra klient");
+    news.getAllByCategory(req.params.kategori_id, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
-  // POST ny sak, kan testes med følgende på POSTMAN:
-  /*
-    { 
-        "overskrift": "Emir Derouiche tar programmering til nye høyder",
-        "innhold": "Med hannukah rett rundt hjørnet setter Emir et godt eksempel for resten av disiplene sine",
-        "bilde": "www.randomimgage.com",
-        "kategori": "religion",
-        "viktighet": 2
-    }
-    */
+  // GET saker gitt søk
+  app.get("/sok/:sokestreng", (req, res) => {
+    console.log("/sok/:sokestreng fikk request fra klient");
+    news.getAllBySearch(req.params.sokestreng, (status, data) => {
+      res.status(status);
+      res.json(data);
+    });
+  });
 
-  // POST en sak i sak-tabellenrs
+  // POST en ny sak i sak
   app.post("/sak", (req, res) => {
-    console.log("Legger til nyhetssak");
-    pool.getConnection((err, connection) => {
-      if (err) {
-        console.log("Feil ved oppkobling");
-        res.json({ error: "feil ved oppkobling" });
-      } else {
-        console.log("Fikk databasekobling");
-        var val = [
-          req.body.overskrift,
-          req.body.innhold,
-          req.body.bilde,
-          req.body.kategori_id,
-          req.body.viktighet
-        ];
-        connection.query(
-          "insert into sak (overskrift, innhold, bilde, kategori_id, viktighet) values (?,?,?,?,?)",
-          val,
-          err => {
-            if (err) {
-              console.log(err);
-              res.status(500);
-              res.json({ error: "Feil ved insert" });
-            } else {
-              console.log("insert ok");
-              res.send("");
-            }
-          }
-        );
-      }
+    console.log("/sak: fikk POST request");
+    news.createOne(req.body, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
   // DELETE sak gitt id
   app.delete("/sak/:sak_id", (req, res) => {
     console.log("Fikk request fra klient");
-    pool.getConnection((err, connection) => {
-      console.log("Koblet til databasen");
-      if (err) {
-        console.log("Feil ved kobling til databasen");
-        res.json({ error: "feil ved oppkobling" });
-      } else {
-        connection.query(
-          "DELETE FROM sak WHERE sak_id=?",
-          req.params.sak_id,
-          (err, rows) => {
-            connection.release();
-            if (err) {
-              console.log(err);
-              res.json({ error: "error querying" });
-            } else {
-              console.log(rows);
-              res.json(rows);
-            }
-          }
-        );
-      }
+    news.deleteOne(req.params.sak_id, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
   // PUT for å oppdatere en kolonne
-  app.put("/sak/:id", (req, res) => {
+  app.put("/sak/:sak_id", (req, res) => {
     console.log("Fikk PUT-request fra klienten");
-    pool.getConnection((err, connection) => {
-      if (err) {
-        console.log("Feil ved oppkobling");
-        res.json({ error: "feil ved oppkobling" });
-      } else {
-        console.log("Fikk databasekobling");
-        var val = [
-          req.body.overskrift,
-          req.body.innhold,
-          req.body.bilde,
-          req.body.kategori_id,
-          req.body.viktighet,
-          req.params.id
-        ];
-        console.log(val);
-        connection.query(
-          "UPDATE sak SET overskrift=?, innhold=?, bilde=?, kategori_id=?, viktighet=? WHERE sak_id=?",
-          val,
-          err => {
-            if (err) {
-              console.log(err);
-              res.status(500);
-              res.json({ error: "Feil ved insert" });
-            } else {
-              console.log("update ok");
-              res.send("");
-            }
-          }
-        );
-      }
-    });
-  });
-
-  // GET alle kategorier i kategori
-  app.get("/kategori", (req, res) => {
-    console.log("Fikk request fra klient");
-    pool.getConnection((err, connection) => {
-      console.log("Connected to database");
-      if (err) {
-        console.log("Feil ved kobling til databasen");
-        res.json({ error: "feil ved ved oppkobling" });
-      } else {
-        connection.query("SELECT * FROM kategori", (err, rows) => {
-          connection.release();
-          if (err) {
-            console.log(err);
-            res.json({ error: "error querying" });
-          } else {
-            console.log(rows);
-            res.json(rows);
-          }
-        });
-      }
-    });
-  });
-
-  // GET alle saker i sak som matcher søk
-  app.get("/sok/:sokestreng", (req, res) => {
-    console.log("Fikk request fra klient");
-    pool.getConnection((err, connection) => {
-      console.log("Connected to database");
-      if (err) {
-        console.log("Feil ved kobling til databasen");
-        res.json({ error: "feil ved ved oppkobling" });
-      } else {
-        connection.query(
-          "SELECT sak_id, overskrift FROM sak WHERE overskrift LIKE '%" +
-            req.params.sokestreng +
-            "%'",
-          (err, rows) => {
-            connection.release();
-            if (err) {
-              console.log(err);
-              res.json({ error: "error querying" });
-            } else {
-              console.log(rows);
-              res.json(rows);
-            }
-          }
-        );
-      }
+    news.updateOne(req.params.sak_id, req.body, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
   // PUT for å oppdatere antall visninger for en sak
   app.put("/visninger/:id", (req, res) => {
-    console.log("Fikk PUT-request fra klienten");
-    pool.getConnection((err, connection) => {
-      if (err) {
-        console.log("Feil ved oppkobling");
-        res.json({ error: "feil ved oppkobling" });
-      } else {
-        console.log("Fikk databasekobling");
-        var val = [req.params.id];
-        console.log(val);
-        connection.query(
-          "UPDATE sak SET visninger=(visninger + 1) WHERE sak_id=?",
-          val,
-          err => {
-            if (err) {
-              console.log(err);
-              res.status(500);
-              res.json({ error: "Feil ved insert" });
-            } else {
-              console.log("update ok");
-              res.send("");
-            }
-          }
-        );
-      }
+    console.log("/visninger/:id fikk PUT-request fra klienten");
+    news.updateOneViews(req.params.sak_id, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
-  // GET alle for en gitt sak
+  // GET alle kategorier i kategori
+  app.get("/kategori", (req, res) => {
+    console.log("/kategori: fikk GET request fra klient");
+    category.getAll((status, data) => {
+      res.status(status);
+      res.json(data);
+    });
+  });
+
+  // GET alle kommentarer for en gitt sak
   app.get("/kommentar/:sak_id", (req, res) => {
-    console.log("Fikk GET request fra klient");
-    pool.getConnection((err, connection) => {
-      console.log("Connected to database");
-      if (err) {
-        console.log("Feil ved kobling til databasen");
-        res.json({ error: "feil ved ved oppkobling" });
-      } else {
-        connection.query(
-          "SELECT brukernavn, kommentar, tidspunkt FROM kommentar WHERE sak_id = ?",
-          req.params.sak_id,
-          (err, rows) => {
-            connection.release();
-            if (err) {
-              console.log(err);
-              res.json({ error: "error querying" });
-            } else {
-              console.log(rows);
-              res.json(rows);
-            }
-          }
-        );
-      }
+    console.log("/kommentar/:sak_id fikk GET request fra klient");
+    comment.getAll(req.params.sak_id, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 
   // POST en kommentar for en sak
   app.post("/kommentar/:sak_id", (req, res) => {
-    console.log("Legger til kommentar");
-    pool.getConnection((err, connection) => {
-      if (err) {
-        console.log("Feil ved oppkobling");
-        res.json({ error: "feil ved oppkobling" });
-      } else {
-        console.log("Fikk databasekobling");
-        var val = [req.body.brukernavn, req.body.kommentar, req.params.sak_id];
-        connection.query(
-          "insert into kommentar (brukernavn, kommentar, sak_id) values (?,?,?)",
-          val,
-          err => {
-            if (err) {
-              console.log(err);
-              res.status(500);
-              res.json({ error: "Feil ved insert" });
-            } else {
-              console.log("insert ok");
-              res.send("");
-            }
-          }
-        );
-      }
+    console.log("/kommentar/:sak_id fikk POST request");
+    comment.createOne(req.params.sak_id, req.body, (status, data) => {
+      res.status(status);
+      res.json(data);
     });
   });
 };

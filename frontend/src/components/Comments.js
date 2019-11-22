@@ -47,7 +47,6 @@ export default class Comments extends Component {
   render() {
     return (
       <div className="text-box mt-5">
-        <h3>Kommentarer</h3>
         <form>
           <div class="form-group">
             <label>Brukernavn</label>
@@ -82,6 +81,8 @@ export default class Comments extends Component {
             </button>
           </div>
         </form>
+        <h3>Kommentarer</h3>
+
         {this.state.comments.map(kommentar => (
           <div class="card mb-3">
             <div class="card-header">

@@ -74,7 +74,7 @@ export default class Article extends Component<{
                 </span>
               </div>
 
-              <div className="ml-auto">Visninger: {sak.visninger}</div>
+              <div className="ml-auto mr-3">Visninger: {sak.visninger}</div>
             </div>
 
             <p className="mx-auto">{sak.innhold}</p>

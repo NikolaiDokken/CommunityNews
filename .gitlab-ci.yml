@@ -22,7 +22,7 @@ run_tests:
     - npm test
   artifacts:
     paths:
-      - dao/coverage/
+      - backend/dao/coverage/
 
 # Publish coverage report on gitlab-pages
 pages:
@@ -32,7 +32,7 @@ pages:
   script:
     - mkdir .public
     - cp -r coverage/* .public
-    - mv .public ../public
+    - mv .public ../../public
   artifacts:
     paths:
       - public
