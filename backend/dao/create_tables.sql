@@ -62,8 +62,8 @@ ALTER TABLE kommentar
   MODIFY kommentar_id int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE sak
-  ADD CONSTRAINT FOREIGN KEY (kategori_id) REFERENCES kategori (kategori_id);
+  ADD CONSTRAINT FOREIGN KEY (kategori_id) REFERENCES kategori(kategori_id);
 
 ALTER TABLE kommentar
-  ADD CONSTRAINT FOREIGN KEY (sak_id) REFERENCES sak (sak_id);
+  ADD CONSTRAINT FOREIGN KEY sak_id REFERENCES sak(sak_id);
 COMMIT;
