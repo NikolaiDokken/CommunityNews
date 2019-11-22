@@ -1,6 +1,30 @@
+var mysql = require("mysql");
+
 const Comment = require("./comment.js");
+const runsqlfile = require("./runsqlfile.js");
+
+// GitLab CI Pool
+var pool = mysql.createPool({
+  connectionLimit: 2,
+  host: "mysql",
+  user: "root",
+  password: "password",
+  database: "testDB",
+  debug: false,
+  multipleStatements: true
+});
 
 let comment = new Comment(pool);
+
+beforeAll(done => {
+  runsqlfile("dao/create_tables.sql", pool, () => {
+    runsqlfile("dao/create_testdata.sql", pool, done);
+  });
+});
+
+afterAll(() => {
+  pool.end();
+});
 
 test("get all comments from db", done => {
   function callback(status, data) {
