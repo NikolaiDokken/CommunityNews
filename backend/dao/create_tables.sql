@@ -19,6 +19,14 @@ CREATE TABLE sak (
   viktighet int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE kommentar (
+  kommentar_id int(11) NOT NULL,
+  brukernavn varchar(20) NOT NULL,
+  kommentar varchar(200) NOT NULL,
+  tidspunkt datetime NOT NULL DEFAULT '2019-11-20 20:15:00',
+  sak_id int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 ALTER TABLE kategori
   ADD PRIMARY KEY (kategori_id);
 
@@ -28,6 +36,10 @@ ALTER TABLE kategori
 ALTER TABLE sak
   ADD PRIMARY KEY (sak_id),
   ADD KEY kategori (kategori_id);
+
+ALTER TABLE kommentar
+  ADD PRIMARY KEY (kommentar_id),
+  ADD KEY sak_id (sak_id);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -45,6 +57,12 @@ ALTER TABLE kategori
 ALTER TABLE sak
   MODIFY sak_id int(11) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE kommentar
+  MODIFY kommentar_id int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE sak
   ADD CONSTRAINT FOREIGN KEY (kategori_id) REFERENCES kategori (kategori_id);
+
+ALTER TABLE kommentar
+  ADD CONSTRAINT FOREIGN KEY (sak_id) REFERENCES sak (sak_id);
 COMMIT;
