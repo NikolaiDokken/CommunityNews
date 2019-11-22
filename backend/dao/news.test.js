@@ -119,7 +119,7 @@ test("update an article in the database", done => {
   }
 
   news.updateOne(
-    5,
+    4,
     {
       overskrift: "Oppdatert overskrift",
       innhold: "oppdatert innhold",
