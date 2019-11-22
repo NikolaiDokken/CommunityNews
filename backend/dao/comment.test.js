@@ -45,7 +45,6 @@ test("add comment to db", done => {
       "Test callback: status=" + status + ", data=" + JSON.stringify(data)
     );
     expect(data.affectedRows).toBeGreaterThanOrEqual(1);
-    expect(data[5].brukernavn).toBe("Ny bruker");
 
     done();
   }
