@@ -73,6 +73,42 @@ test("get all articles from db", done => {
   news.getAll(callback);
 });
 
+test("get all articles from db by importance", done => {
+  function callback(status, data) {
+    console.log(
+      "Test callback: status=" + status + ", data.length=" + data.length
+    );
+    expect(data.length).toBe(4);
+    done();
+  }
+
+  news.getAllByImportance(1, callback);
+});
+
+test("get all articles from db by category", done => {
+  function callback(status, data) {
+    console.log(
+      "Test callback: status=" + status + ", data.length=" + data.length
+    );
+    expect(data.length).toBe(1);
+    done();
+  }
+
+  news.getAllByCategory(3, callback);
+});
+
+test("get all articles from db by search", done => {
+  function callback(status, data) {
+    console.log(
+      "Test callback: status=" + status + ", data.length=" + data.length
+    );
+    expect(data.length).toBe(1);
+    done();
+  }
+
+  news.getAllBySearch("overskrift1", callback);
+});
+
 test("update an article in the database", done => {
   function callback(status, data) {
     console.log(
@@ -93,6 +129,18 @@ test("update an article in the database", done => {
     },
     callback
   );
+});
+
+test("update amount of views for an article", done => {
+  function callback(status, data) {
+    console.log(
+      "Test callback: status=" + status + ", data.length=" + data.length
+    );
+    expect(data.affectedRows).toBeGreaterThanOrEqual(1);
+    done();
+  }
+
+  news.updateOne(3, callback);
 });
 
 test("delete an article in the database", done => {
