@@ -126,7 +126,7 @@ class EditCard extends Component<element> {
     return (
       <div class="card">
         <div class="card-header" id={"headingOne"}>
-          <div className="row custom-width">
+          <div className="row">
             <h2 class="mb-0">
               <button
                 class="btn btn-link"

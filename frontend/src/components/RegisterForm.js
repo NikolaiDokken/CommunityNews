@@ -32,7 +32,7 @@ export default class RegisterForm extends Component {
   };
 
   // Method for registering news Article
-  submitRegister = e => {
+  submitRegister() {
     console.log("Submitting form register");
     console.log(this.state.overskrift);
 
@@ -52,8 +52,6 @@ export default class RegisterForm extends Component {
     }
     registerArticle(this.state)
       .then(res => {
-        console.log(res);
-        console.log(res.data);
         alert("Din sak ble lagt til");
         window.location.hash = "";
       })

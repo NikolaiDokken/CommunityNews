@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import "../styles/stylesheet.css";
 import "../styles/Article.css";
 import Navbar from "./Navbar";
+import Comments from "./Comments";
 import Footer from "./Footer";
 import axios from "axios";
-import { getArticle } from "../Service";
+import { getArticle, updateArticleViews } from "../Service";
 
 export default class Article extends Component<{
   match: { params: { id: number } }
@@ -14,54 +15,71 @@ export default class Article extends Component<{
     this.state = {
       error: null,
       isLoaded: false,
-      forfatter: "",
-      overskrift: "",
-      innhold: "",
-      tidspunkt: "",
-      bilde: "",
-      kategori: "Kategori",
-      viktighet: 1
+      sak: []
     };
+  }
+
+  updateViews() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, 10000);
+    });
   }
 
   componentDidMount() {
     getArticle(this.props.match.params.id).then(res => {
       this.setState({
-        forfatter: res.forfatter,
-        overskrift: res.overskrift,
-        innhold: res.innhold,
-        tidspunkt: res.tidspunkt,
-        bilde: res.bilde
+        sak: res
       });
+      console.log("sakID" + res.sak_id);
       this.setState({ isLoaded: true });
+    });
+    this.updateViews().then(() => {
+      updateArticleViews(this.props.match.params.id);
     });
   }
 
   render() {
-    if (this.state.error) {
-      return <div>Error: {this.state.error.message}</div>;
-    } else if (!this.state.isLoaded) {
+    const { error, isLoaded, sak } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
       return <div>Loading...</div>;
     } else {
       return (
         <div>
           <Navbar />
-          <img className="mt-3" id="image" src={this.state.bilde}></img>
+          <img className="mt-3" id="image" src={sak.bilde}></img>
           <div className="text-box">
-            <h1>{this.state.overskrift}</h1>
-            <p id="info-text">
-              Av {this.state.forfatter} |{" "}
-              {" " +
-                this.state.tidspunkt.substring(8, 10) +
-                "." +
-                this.state.tidspunkt.substring(5, 7) +
-                "." +
-                this.state.tidspunkt.substring(0, 4) +
-                " Kl. " +
-                this.state.tidspunkt.substring(11, 16)}
-            </p>
-            <p className="mx-auto">{this.state.innhold}</p>
+            <h1>{sak.overskrift}</h1>
+            <div className="row">
+              <p className="col" id="info-text">
+                Av {sak.forfatter} |{" "}
+                {" " +
+                  sak.tidspunkt.substring(8, 10) +
+                  "." +
+                  sak.tidspunkt.substring(5, 7) +
+                  "." +
+                  sak.tidspunkt.substring(0, 4) +
+                  " Kl. " +
+                  sak.tidspunkt.substring(11, 16)}
+              </p>
+              <div className="col">
+                <span
+                  className="badge badge-warning"
+                  style={{ height: "25px", width: "110px", fontSize: "15px" }}
+                >
+                  {sak.kategori_navn}
+                </span>
+              </div>
+
+              <div className="ml-auto">Visninger: {sak.visninger}</div>
+            </div>
+
+            <p className="mx-auto">{sak.innhold}</p>
           </div>
+          <Comments sak_id={this.props.match.params.id}></Comments>
         </div>
       );
     }

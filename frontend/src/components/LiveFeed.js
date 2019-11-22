@@ -30,11 +30,20 @@ export default class LiveFeed extends Component {
     } else {
       return (
         <div class="marquee">
-          <div>SISTE NYTT</div>
+          <div><strong>SISTE NYTT</strong></div>
           <p>
             {this.state.overskrifter.map(overskrift => (
-              <NavLink className="mr-5" exact to={"/sak/" + overskrift.sak_id}>
-                {overskrift.overskrift}
+              <NavLink className="mr-5" exact to={"/sak/" + overskrift.sak_id} style={{textDecorationLine: "none"}}>
+                <text style={{ color: "#1b1b1b", textDecorationStyle: "solid"}}>
+                  <strong>
+                    {overskrift.tidspunkt.substring(8, 10) +
+                      "." +
+                      overskrift.tidspunkt.substring(5, 7) +
+                      " Kl. " +
+                      overskrift.tidspunkt.substring(11, 16)}
+                  </strong>
+                </text>
+                {" - " + overskrift.overskrift}
               </NavLink>
             ))}
           </p>

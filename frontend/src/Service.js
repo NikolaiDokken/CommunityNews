@@ -55,8 +55,7 @@ export function registerArticle(state) {
     .then(res => {
       console.log(res);
       console.log(res.data);
-      alert("Din sak ble lagt til");
-      window.location.hash = "";
+      
     })
     .catch(error => {
       console.log(error.response);
@@ -67,10 +66,7 @@ export function updateArticle(id, props) {
   return axios
     .put("http://localhost:8080/sak/" + id, props)
     .then(res => {
-      console.log(res);
       console.log(res.data);
-      // alert("Din sak ble oppdatert");
-      // window.location.reload();
       return;
     })
     .catch(error => {
@@ -111,5 +107,40 @@ export function getSearch(searchString) {
     })
     .catch(error => {
       console.log(error);
+    });
+}
+
+export function updateArticleViews(id) {
+  return axios
+    .put("http://localhost:8080/visninger/" + id)
+    .then(res => {
+      return;
+    })
+    .catch(error => {
+      console.log(error.response);
+    });
+}
+
+export function getComments(sak_id) {
+  return axios
+    .get("http://localhost:8080/kommentar/" + sak_id)
+    .then(res => {
+      console.log(res.data);
+      return res.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
+export function postComment(id, state) {
+  return axios
+    .post("http://localhost:8080/kommentar/" + id, state)
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+    })
+    .catch(error => {
+      console.log(error.response);
     });
 }

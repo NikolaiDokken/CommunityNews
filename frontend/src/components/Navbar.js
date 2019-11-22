@@ -24,6 +24,10 @@ export default class Navbar extends Component {
     });
   }
 
+  componentWillUnmount() {
+    
+  }
+
   onSearch = event => {
     var search = event.target.value;
     if (search.length > 0) {
@@ -154,7 +158,7 @@ export default class Navbar extends Component {
                     exact
                     to={"/sak/" + result.sak_id}
                     style={i % 2 == 0 ? { color: "white" } : { color: "black" }}
-                    onClick={() => {
+                    onMouseDown={() => {
                       window.location.hash = "/sak/" + result.sak_id;
                       window.location.reload();
                     }}

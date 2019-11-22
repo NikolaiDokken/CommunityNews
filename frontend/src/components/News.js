@@ -16,7 +16,6 @@ export default class News extends Component {
   }
 
   componentDidMount() {
-    console.log("kategorien er" + this.props.kategori);
     if (this.props.kategori === undefined) {
       getFrontPageNews()
         .then(items => {
