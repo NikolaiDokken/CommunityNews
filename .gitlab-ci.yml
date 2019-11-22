@@ -12,7 +12,7 @@ variables:
 
 # Install node libraries
 before_script:
-  - cd backend/dao
+  - cd backend
   - npm install
 
 # Run JEST tests
@@ -22,7 +22,7 @@ run_tests:
     - npm test
   artifacts:
     paths:
-      - backend/dao/coverage/
+      - backend/coverage/
 
 # Publish coverage report on gitlab-pages
 pages:
@@ -32,7 +32,7 @@ pages:
   script:
     - mkdir .public
     - cp -r coverage/* .public
-    - mv .public ../../public
+    - mv .public ../public
   artifacts:
     paths:
       - public
