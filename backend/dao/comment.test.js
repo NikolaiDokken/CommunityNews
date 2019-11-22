@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 
-const Category = require("./comment.js");
+const Comment = require("./comment.js");
 const runsqlfile = require("./runsqlfile.js");
 
 // GitLab CI Pool
