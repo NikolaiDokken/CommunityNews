@@ -12,7 +12,7 @@ variables:
 
 # Install node libraries
 before_script:
-  - cd dao
+  - cd backend/dao
   - npm install
 
 # Run JEST tests
