@@ -16,7 +16,8 @@ CREATE TABLE sak (
   tidspunkt datetime NOT NULL DEFAULT '2019-11-20 20:15:00',
   bilde text NOT NULL,
   kategori_id int(11) NOT NULL,
-  viktighet int(11) NOT NULL
+  viktighet int(11) NOT NULL,
+  visninger int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE kommentar (
