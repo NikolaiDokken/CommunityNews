@@ -40,33 +40,12 @@ test("get an article from db", done => {
   news.getOne(1, callback);
 });
 
-test("add article to db", done => {
-  function callback(status, data) {
-    console.log(
-      "Test callback: status=" + status + ", data=" + JSON.stringify(data)
-    );
-    expect(data.affectedRows).toBeGreaterThanOrEqual(1);
-    done();
-  }
-
-  news.createOne(
-    {
-      overskrift: "Ny overskrift",
-      innhold: "nytt innhold",
-      bilde: "bildeurl.com",
-      kategori_id: 3,
-      viktighet: 1
-    },
-    callback
-  );
-});
-
 test("get all articles from db", done => {
   function callback(status, data) {
     console.log(
       "Test callback: status=" + status + ", data.length=" + data.length
     );
-    expect(data.length).toBeGreaterThanOrEqual(5);
+    expect(data.length).toBe(4);
     done();
   }
 
@@ -109,6 +88,27 @@ test("get all articles from db by search", done => {
   news.getAllBySearch("overskrift1", callback);
 });
 
+test("add article to db", done => {
+  function callback(status, data) {
+    console.log(
+      "Test callback: status=" + status + ", data=" + JSON.stringify(data)
+    );
+    expect(data.affectedRows).toBeGreaterThanOrEqual(1);
+    done();
+  }
+
+  news.createOne(
+    {
+      overskrift: "Ny overskrift",
+      innhold: "nytt innhold",
+      bilde: "bildeurl.com",
+      kategori_id: 3,
+      viktighet: 1
+    },
+    callback
+  );
+});
+
 test("update an article in the database", done => {
   function callback(status, data) {
     console.log(
@@ -140,7 +140,7 @@ test("update amount of views for an article", done => {
     done();
   }
 
-  news.updateOne(3, callback);
+  news.updateOneViews(3, callback);
 });
 
 test("delete an article in the database", done => {
