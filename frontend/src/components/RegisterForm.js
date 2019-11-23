@@ -10,16 +10,43 @@ import {
 } from "../Service.js";
 import "../styles/RegisterForm.css";
 
-export default class RegisterForm extends Component {
-  constructor(props) {
+type Sak = {
+  sak_id: number,
+  overskrift: string,
+  innhold: string,
+  bilde: string,
+  kategori_id: number,
+  viktighet: number
+};
+
+type Kategori = { kategori_id: number, kategori_navn: string };
+
+export default class RegisterForm extends Component<
+  {
+    kategorier: Array<Kategori>,
+    sak: Sak,
+    registrer: boolean
+  },
+  {
+    sak_id: number,
+    overskrift: string,
+    innhold: string,
+    bilde: string,
+    kategori_id: number,
+    viktighet: number,
+    registrer: boolean,
+    kategorier: Array<Kategori>
+  }
+> {
+  constructor(props: any) {
     super(props);
     this.state = {
-      sak_id: this.props.sak_id,
-      overskrift: this.props.overskrift,
-      innhold: this.props.innhold,
-      bilde: this.props.bilde,
-      kategori_id: this.props.kategori_id,
-      viktighet: this.props.viktighet,
+      sak_id: this.props.sak.sak_id,
+      overskrift: this.props.sak.overskrift,
+      innhold: this.props.sak.innhold,
+      bilde: this.props.sak.bilde,
+      kategori_id: this.props.sak.kategori_id,
+      viktighet: this.props.sak.viktighet,
       registrer: this.props.registrer,
       kategorier: this.props.kategorier
     };
@@ -27,12 +54,12 @@ export default class RegisterForm extends Component {
     this.submitUpdate = this.submitUpdate.bind(this);
   }
 
-  handleChange = event => {
+  handleChange = (event: any) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   // Method for registering news Article
-  submitRegister() {
+  submitRegister = () => {
     console.log("Submitting form register");
     console.log(this.state.overskrift);
 
@@ -46,7 +73,7 @@ export default class RegisterForm extends Component {
     } else if (this.state.bilde == "") {
       alert("Artikkelen må ha et bilde");
       return;
-    } else if (this.state.kategori == "Kategori") {
+    } else if (this.state.kategori_id == 0) {
       alert("Artikkelen må ha en kategori");
       return;
     }
@@ -61,7 +88,7 @@ export default class RegisterForm extends Component {
   };
 
   // Method for editing newscase
-  submitUpdate() {
+  submitUpdate = () => {
     console.log("Submitting update");
 
     // Check for form errors
@@ -74,7 +101,7 @@ export default class RegisterForm extends Component {
     } else if (this.state.bilde == "") {
       alert("Artikkelen må ha et bilde");
       return;
-    } else if (this.state.kategori == "Kategori") {
+    } else if (this.state.kategori_id == 0) {
       alert("Artikkelen må ha en kategori");
       return;
     }
@@ -87,9 +114,9 @@ export default class RegisterForm extends Component {
       .catch(error => {
         console.log(error.response);
       });
-  }
+  };
 
-  activeButton(button, active) {
+  activeButton(button: number, active: number) {
     const prefix = "btn btn-secondary";
     if (button == active) {
       return prefix + " active";

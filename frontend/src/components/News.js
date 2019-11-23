@@ -13,7 +13,7 @@ export default class News extends Component<
     items: Array<Object>
   }
 > {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
       error: null,

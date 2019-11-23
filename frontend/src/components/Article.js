@@ -9,22 +9,22 @@ import Footer from "./Footer";
 import axios from "axios";
 import { getArticle, updateArticleViews } from "../Service";
 
-type Sak = {|
-  overskrift?: string,
-  innhold?: string,
-  bilde?: string,
-  forfatter?: string,
-  tidspunkt?: string,
-  kategori_navn?: string,
-  visninger?: number
-|};
+type Sak = {
+  overskrift: string,
+  innhold: string,
+  bilde: string,
+  forfatter: string,
+  tidspunkt: string,
+  kategori_navn: string,
+  visninger: number
+};
 
 export default class Article extends Component<
   { match: { params: { id: number } } },
   {
     error: any,
     isLoaded: boolean,
-    sak: Array<Sak>
+    sak: Sak
   }
 > {
   constructor(props: any) {
@@ -32,7 +32,7 @@ export default class Article extends Component<
     this.state = {
       error: null,
       isLoaded: false,
-      sak: []
+      sak: {}
     };
   }
 

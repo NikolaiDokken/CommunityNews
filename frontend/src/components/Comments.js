@@ -7,7 +7,7 @@ import { getComments, postComment } from "../Service";
 
 export default class Comments extends Component<
   { sak_id: number },
-  { comments: ?Array<Object>, brukernavn: string, kommentar: string }
+  { comments: Array<{brukernavn: string, kommentar: string}>, brukernavn: string, kommentar: string }
 > {
   constructor(props: any) {
     super(props);

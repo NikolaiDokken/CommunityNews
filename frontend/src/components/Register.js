@@ -12,8 +12,14 @@ import {
 } from "../Service.js";
 import RegisterForm from "./RegisterForm.js";
 
-export default class Register extends Component {
-  constructor(props) {
+export default class Register extends Component<
+  {},
+  {
+    kategorier: Array<{ kategori_id: number, kategori_navn: string }>,
+    isLoaded: boolean
+  }
+> {
+  constructor(props: any) {
     super(props);
     this.state = {
       kategorier: [],
@@ -29,6 +35,14 @@ export default class Register extends Component {
   }
 
   render() {
+    var emptyArticle = {
+      sak_id: 0,
+      overskrift: "",
+      innhold: "",
+      bilde: "",
+      kategori_id: 0,
+      viktighet: 1
+    };
     if (!this.state.isLoaded) {
       return <div>Loading...</div>;
     } else {
@@ -44,11 +58,7 @@ export default class Register extends Component {
             </div>
           </div>
           <RegisterForm
-            overskrift=""
-            innhold=""
-            bilde=""
-            kategori_id={0}
-            viktighet={1}
+            sak={emptyArticle}
             registrer={true}
             kategorier={this.state.kategorier}
           />
@@ -60,7 +70,10 @@ export default class Register extends Component {
   }
 }
 
-class Edit extends Component {
+class Edit extends Component<
+  { kategorier: Array<Object> },
+  { error: any, isLoaded: boolean, items: Array<Object> }
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,8 +101,8 @@ class Edit extends Component {
         <div className="mx-5">
           <h1>Rediger/Slett sak</h1>
           <div class="accordion" id="accordionExample">
-            {items.map(e => (
-              <EditCard element={e} kategorier={this.props.kategorier} />
+            {items.map(sak => (
+              <EditCard sak={sak} kategorier={this.props.kategorier} />
             ))}
           </div>
         </div>
@@ -98,31 +111,23 @@ class Edit extends Component {
   }
 }
 
-class EditCard extends Component<element> {
+class EditCard extends Component<{ sak: Object, kategorier: Array<Object> }> {
   constructor(props) {
     super(props);
-    this.state = {
-      overskrift: this.props.element.overskrift,
-      innhold: this.props.element.innhold,
-      bilde: this.props.element.bilde,
-      kategori_id: this.props.element.kategori_id,
-      viktighet: this.props.element.viktighet,
-      sak_id: this.props.element.sak_id
-    };
     this.deleteArticle = this.deleteArticle.bind(this);
   }
 
   // Handles onclick for delete button
-  deleteArticle() {
+  deleteArticle = () => {
     if (window.confirm("Er du sikker på at du vil slette denne saken?")) {
-      deleteArticleDB(this.state.sak_id).then(res => {
+      deleteArticleDB(this.props.sak.sak_id).then(res => {
         alert("Saken din er slettet!");
         window.location.reload(true);
       });
     } else {
       // Do nothing
     }
-  }
+  };
 
   render() {
     return (
@@ -134,17 +139,17 @@ class EditCard extends Component<element> {
                 class="btn btn-link"
                 type="button"
                 data-toggle="collapse"
-                data-target={"#collapse" + this.state.sak_id}
+                data-target={"#collapse" + this.props.sak.sak_id}
                 aria-expanded="true"
                 aria-controls="collapseOne"
               >
                 {window.innerWidth <= 325
-                  ? this.state.overskrift.substring(0, 10) + "..."
+                  ? this.props.sak.overskrift.substring(0, 10) + "..."
                   : window.innerWidth <= 375
-                  ? this.state.overskrift.substring(0, 17) + "..."
+                  ? this.props.sak.overskrift.substring(0, 17) + "..."
                   : window.innerWidth <= 414
-                  ? this.state.overskrift.substring(0, 23) + "..."
-                  : this.state.overskrift}
+                  ? this.props.sak.overskrift.substring(0, 23) + "..."
+                  : this.props.sak.overskrift}
               </button>
             </h2>
             <div class="ml-auto">
@@ -160,21 +165,16 @@ class EditCard extends Component<element> {
         </div>
 
         <div
-          id={"collapse" + this.state.sak_id}
+          id={"collapse" + this.props.sak.sak_id}
           class="collapse"
           aria-labelledby="headingOne"
           data-parent="#accordionExample"
         >
           <div class="card-body">
             <RegisterForm
-              overskrift={this.state.overskrift}
-              innhold={this.state.innhold}
-              bilde={this.state.bilde}
-              kategori_id={this.state.kategori_id}
-              viktighet={this.state.viktighet}
-              registrer={false}
-              sak_id={this.state.sak_id}
+              sak={this.props.sak}
               kategorier={this.props.kategorier}
+              registrer={false}
             />
           </div>
         </div>
