@@ -10,7 +10,7 @@ export default class Navbar extends Component<
   {
     kategorier: Array<{ kategori_id: number, kategori_navn: string }>,
     currentKategori: number,
-    searchResults: Array<{sak_id: number, overskrift: string}>
+    searchResults: Array<{ sak_id: number, overskrift: string }>
   }
 > {
   constructor(props: any) {
@@ -20,9 +20,11 @@ export default class Navbar extends Component<
       currentKategori: 0,
       searchResults: []
     };
+    this.showCategoryName = this.showCategoryName.bind(this);
   }
 
   componentDidMount() {
+    // console.log(this.props.kategori);
     getCategories().then(kategorier => {
       this.setState({ kategorier });
       if (this.props.kategori !== undefined) {
@@ -30,8 +32,6 @@ export default class Navbar extends Component<
       }
     });
   }
-
-  componentWillUnmount() {}
 
   onSearch = (event: any) => {
     var search = event.target.value;
@@ -49,70 +49,78 @@ export default class Navbar extends Component<
     this.setState({ searchResults: [] });
   };
 
+  showCategoryName = () => {
+    if (this.state.currentKategori == 0 || this.state.kategorier == undefined) {
+      return "Kategorier";
+    } else {
+      console.log(this.state.currentKategori + "curr");
+      return this.state.kategorier.find(
+        kategori => kategori.kategori_id == this.state.currentKategori
+      ).kategori_navn;
+    }
+  };
+
   render() {
     return (
       <nav
-        class="navbar navbar-expand-xl navbar-dark nav-bg-custom sticky-top py-0"
+        className="navbar navbar-expand-xl navbar-dark nav-bg-custom sticky-top py-0"
         role="navigation"
       >
-        <a class="navbar-brand my-0">
-          <NavLink className="nav-link" exact to="/">
-            <div className="row">
-              <div className="col pr-0">Ing</div>
-              <div
-                className="col"
-                style={{
-                  backgroundColor: "#ffa31a",
-                  borderRadius: "5px",
-                  padding: "2px",
-                  color: "black"
-                }}
-              >
-                Nytt
-              </div>
+        <NavLink className="navbar-brand my-0 nav-link" exact to="/">
+          <div className="row">
+            <div className="col pr-0">Ing</div>
+            <div
+              className="col"
+              style={{
+                backgroundColor: "#ffa31a",
+                borderRadius: "5px",
+                padding: "2px",
+                color: "black"
+              }}
+            >
+              Nytt
             </div>
-          </NavLink>
-        </a>
+          </div>
+        </NavLink>
         <button
-          class="navbar-toggler collapsed"
+          className="navbar-toggler collapsed"
           type="button"
           data-toggle="collapse"
           data-target="#navbarSupportedContent"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="nav navbar-nav mx-auto">
-            <li class="nav-item custom-nav-text mr-5 my-auto">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="nav navbar-nav mx-auto">
+            <li className="nav-item custom-nav-text mr-5 my-auto">
               <NavLink className="nav-link" exact to="/">
                 FORSIDE
               </NavLink>
             </li>
-            <li class="nav-item custom-nav-text mr-5 my-auto">
+            <li className="nav-item custom-nav-text mr-5 my-auto">
               <NavLink className="nav-link" exact to="/register">
                 REGISTRER
               </NavLink>
             </li>
-            <li class="nav-item dropdown my-auto custom-nav-text">
+            <li className="nav-item dropdown my-auto custom-nav-text">
               <a
-                class="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle"
                 href="#"
                 id="navbarDropdown"
                 role="button"
                 data-toggle="dropdown"
               >
-                {this.state.currentKategori == 0
-                  ? "KATEGORI"
-                  : this.state.kategorier.find(
-                      kategori =>
-                        kategori.kategori_id == this.state.currentKategori
-                    ).kategori_navn}
+                {this.showCategoryName()}
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 {this.state.kategorier.map(kategori => (
                   <NavLink
+                    className="dropdown-item"
                     onClick={() => {
+                      this.setState({
+                        currentKategori: kategori.kategori_id
+                      });
                       window.location.hash =
                         "/kategori/" + kategori.kategori_id;
                       window.location.reload();
@@ -120,25 +128,17 @@ export default class Navbar extends Component<
                     style={{ color: "black" }}
                     exact
                     to={"/kategori/" + kategori.kategori_id}
+                    key={kategori.kategori_id}
                   >
-                    <a
-                      class="dropdown-item"
-                      onClick={() => {
-                        this.setState({
-                          currentKategori: kategori.kategori_id
-                        });
-                      }}
-                    >
-                      {kategori.kategori_navn}
-                    </a>
+                    {kategori.kategori_navn}
                   </NavLink>
                 ))}
               </div>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
+          <form className="form-inline my-2 my-lg-0">
             <input
-              class="form-control mr-sm-2"
+              className="form-control mr-sm-2"
               type="search"
               placeholder="Søk..."
               aria-label="Search"
@@ -150,7 +150,7 @@ export default class Navbar extends Component<
               {this.state.searchResults.map((result, i) => (
                 <div
                   style={
-                    i % 2 == 0
+                    i % 2 === 0
                       ? {
                           backgroundColor: "#808080",
                           fontSize: "15px"
@@ -162,7 +162,9 @@ export default class Navbar extends Component<
                     className="p-1 w-100"
                     exact
                     to={"/sak/" + result.sak_id}
-                    style={i % 2 == 0 ? { color: "white" } : { color: "black" }}
+                    style={
+                      i % 2 === 0 ? { color: "white" } : { color: "black" }
+                    }
                     onMouseDown={() => {
                       window.location.hash = "/sak/" + result.sak_id;
                       window.location.reload();
@@ -173,7 +175,10 @@ export default class Navbar extends Component<
                 </div>
               ))}
             </div>
-            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+            <button
+              className="btn btn-outline-warning my-2 my-sm-0"
+              type="submit"
+            >
               Søk
             </button>
           </form>

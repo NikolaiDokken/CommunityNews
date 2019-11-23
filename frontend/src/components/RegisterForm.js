@@ -3,10 +3,7 @@
 import React, { Component } from "react";
 import {
   registerArticle,
-  getAllArticles,
   updateArticle,
-  deleteArticleDB,
-  getCategories
 } from "../Service.js";
 import "../styles/RegisterForm.css";
 
@@ -60,20 +57,17 @@ export default class RegisterForm extends Component<
 
   // Method for registering news Article
   submitRegister = () => {
-    console.log("Submitting form register");
-    console.log(this.state.overskrift);
-
     // Check for form errors
-    if (this.state.overskrift == "") {
+    if (this.state.overskrift === "") {
       alert("Artikkelen må ha en overskrift");
       return;
     } else if (this.state.innhold.length < 50) {
       alert("Artikkelens innhold må være lengre enn 50 tegn");
       return;
-    } else if (this.state.bilde == "") {
+    } else if (this.state.bilde === "") {
       alert("Artikkelen må ha et bilde");
       return;
-    } else if (this.state.kategori_id == 0) {
+    } else if (this.state.kategori_id === 0) {
       alert("Artikkelen må ha en kategori");
       return;
     }
@@ -92,16 +86,16 @@ export default class RegisterForm extends Component<
     console.log("Submitting update");
 
     // Check for form errors
-    if (this.state.overskrift == "") {
+    if (this.state.overskrift === "") {
       alert("Artikkelen må ha en overskrift");
       return;
     } else if (this.state.innhold.length < 50) {
       alert("Artikkelens innhold må være lengre enn 50 tegn");
       return;
-    } else if (this.state.bilde == "") {
+    } else if (this.state.bilde === "") {
       alert("Artikkelen må ha et bilde");
       return;
-    } else if (this.state.kategori_id == 0) {
+    } else if (this.state.kategori_id === 0) {
       alert("Artikkelen må ha en kategori");
       return;
     }
@@ -118,7 +112,7 @@ export default class RegisterForm extends Component<
 
   activeButton(button: number, active: number) {
     const prefix = "btn btn-secondary";
-    if (button == active) {
+    if (button === active) {
       return prefix + " active";
     } else {
       return prefix;
@@ -128,92 +122,93 @@ export default class RegisterForm extends Component<
   render() {
     return (
       <form>
-        <div class="form-group mx-5">
+        <div className="form-group mx-5">
           <label>Tittel</label>
           <input
             name="overskrift"
             onChange={this.handleChange}
             type="text"
-            class="form-control"
+            className="form-control"
             placeholder="Skriv inn tittelen til din sak"
             defaultValue={this.state.overskrift}
           ></input>
-          <small id="emailHelp" class="form-text text-muted">
+          <small id="emailHelp" className="form-text text-muted">
             Denne vil vises på forsiden.
           </small>
         </div>
-        <div class="form-group mx-5">
+        <div className="form-group mx-5">
           <label>Beskrivelse</label>
           <textarea
             name="innhold"
             onChange={this.handleChange}
             type="text"
-            class="form-control"
+            className="form-control"
             placeholder="Skriv inn det innholdet du ønsker vist i saken"
             rows="5"
             defaultValue={this.state.innhold}
           ></textarea>
         </div>
-        <div class="row mx-auto justify-content-center">
-          <div class="form-group mx-5">
+        <div className="row mx-auto justify-content-center">
+          <div className="form-group mx-5">
             <label>Bilde-URL</label>
             <input
               name="bilde"
               onChange={this.handleChange}
               type="text"
-              class="form-control"
+              className="form-control"
               placeholder="Lim inn en bilde-url her"
               defaultValue={this.state.bilde}
             ></input>
           </div>
-          <div class="form-group mx-5">
-            <label for="exampleInputEmail1">Kategori</label>
-            <div class="dropdown">
+          <div className="form-group mx-5">
+            <label>Kategori</label>
+            <div className="dropdown">
               <button
-                class="btn btn-secondary dropdown-toggle"
+                className="btn btn-secondary dropdown-toggle"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                {this.state.kategori_id == 0
+                {this.state.kategori_id === 0
                   ? "Kategori"
                   : this.state.kategorier.find(
-                      kategori => kategori.kategori_id == this.state.kategori_id
+                      kategori => kategori.kategori_id === this.state.kategori_id
                     ).kategori_navn}
               </button>
               <div
-                class="dropdown-menu category-box"
+                className="dropdown-menu category-box"
                 aria-labelledby="dropdownMenuButton"
                 style={
                   this.state.registrer ? { height: "80px" } : { height: "50px" }
                 }
               >
                 {this.state.kategorier.map(kategori => (
-                  <a
-                    class="dropdown-item"
+                  <div
+                    className="dropdown-item"
                     onClick={() => {
                       this.setState({ kategori_id: kategori.kategori_id });
                     }}
+                    key={kategori.kategori_id}
                   >
                     {kategori.kategori_navn}
-                  </a>
+                  </div>
                 ))}
               </div>
             </div>
           </div>
-          <div class="form-group mx-5">
-            <label for="importancyInput">
+          <div className="form-group mx-5">
+            <label>
               Viktighet:&nbsp;
               {this.state.viktighet +
                 " " +
-                (this.state.viktighet == 1
+                (this.state.viktighet === 1
                   ? "Forsidememateriale"
                   : "Kategorispesifikk artikkel")}
             </label>
             <br></br>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <div className="btn-group btn-group-toggle" data-toggle="buttons">
               <button
                 className={this.activeButton(1, this.state.viktighet)}
                 style={{ width: "80px" }}
@@ -223,8 +218,7 @@ export default class RegisterForm extends Component<
                   type="radio"
                   name="options"
                   id="option1"
-                  autocomplete="off"
-                  checked
+                  autoComplete="off"
                 ></input>
                 1
               </button>
@@ -237,7 +231,7 @@ export default class RegisterForm extends Component<
                   type="radio"
                   name="options"
                   id="option2"
-                  autocomplete="off"
+                  autoComplete="off"
                 ></input>{" "}
                 2
               </button>
@@ -251,7 +245,7 @@ export default class RegisterForm extends Component<
               onClick={
                 this.state.registrer ? this.submitRegister : this.submitUpdate
               }
-              class="btn btn-primary"
+              className="btn btn-primary"
               style={{ height: "40px" }}
             >
               Submit

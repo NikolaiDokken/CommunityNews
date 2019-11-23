@@ -6,7 +6,6 @@ import "../styles/Article.css";
 import Navbar from "./Navbar";
 import Comments from "./Comments";
 import Footer from "./Footer";
-import axios from "axios";
 import { getArticle, updateArticleViews } from "../Service";
 
 type Sak = {
@@ -18,6 +17,9 @@ type Sak = {
   kategori_navn: string,
   visninger: number
 };
+
+var timeStart: number = 0;
+var timeStop: number = 0;
 
 export default class Article extends Component<
   { match: { params: { id: number } } },
@@ -36,33 +38,25 @@ export default class Article extends Component<
     };
   }
 
-  updateViews() {
-    return new Promise<any>((resolve: any, reject: any) => {
-      setTimeout(() => {
-        resolve();
-      }, 10000);
-    });
-  }
-
   componentDidMount() {
+    timeStart = new Date().getTime();
     getArticle(this.props.match.params.id)
       .then(res => {
         this.setState({
           sak: res
         });
-        console.log("sakID" + res.sak_id);
         this.setState({ isLoaded: true });
       })
       .catch(error => {
         this.setState({ error });
       });
-    this.updateViews()
-      .then(() => {
-        updateArticleViews(this.props.match.params.id);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
+  }
+
+  componentWillUnmount() {
+    timeStop = new Date().getTime();
+    if (timeStop - timeStart > 10000) {
+      updateArticleViews(this.props.match.params.id);
+    }
   }
 
   render() {
@@ -75,7 +69,7 @@ export default class Article extends Component<
       return (
         <div>
           <Navbar />
-          <img className="mt-3" id="image" src={sak.bilde}></img>
+          <img className="mt-3" id="image" src={sak.bilde} alt={sak.overskrift}></img>
           <div className="text-box">
             <h1>{sak.overskrift}</h1>
             <div className="row">
@@ -105,6 +99,7 @@ export default class Article extends Component<
             <p className="mx-auto">{sak.innhold}</p>
           </div>
           <Comments sak_id={this.props.match.params.id}></Comments>
+          <Footer></Footer>
         </div>
       );
     }

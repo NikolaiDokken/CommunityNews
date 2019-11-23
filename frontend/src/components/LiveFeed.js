@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import "../styles/LiveFeed.css";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
 import { getFrontPageNews } from "../Service";
 
 export default class LiveFeed extends Component<{},{error: any, isLoaded: boolean, overskrifter: Array<string>}> {
@@ -31,12 +30,12 @@ export default class LiveFeed extends Component<{},{error: any, isLoaded: boolea
       return <div>Loading...</div>;
     } else {
       return (
-        <div class="marquee">
+        <div className="marquee">
           <div><strong>SISTE NYTT</strong></div>
           <p>
-            {this.state.overskrifter.map(overskrift => (
-              <NavLink className="mr-5" exact to={"/sak/" + overskrift.sak_id} style={{textDecorationLine: "none"}}>
-                <text style={{ color: "#1b1b1b", textDecorationStyle: "solid"}}>
+            {this.state.overskrifter.map((overskrift, index) => (
+              <NavLink className="mr-5" exact to={"/sak/" + overskrift.sak_id} style={{textDecorationLine: "none"}} key={index}>
+                <var style={{ color: "#1b1b1b", textDecorationStyle: "solid"}}>
                   <strong>
                     {overskrift.tidspunkt.substring(8, 10) +
                       "." +
@@ -44,7 +43,7 @@ export default class LiveFeed extends Component<{},{error: any, isLoaded: boolea
                       " Kl. " +
                       overskrift.tidspunkt.substring(11, 16)}
                   </strong>
-                </text>
+                </var>
                 {" - " + overskrift.overskrift}
               </NavLink>
             ))}
@@ -53,21 +52,4 @@ export default class LiveFeed extends Component<{},{error: any, isLoaded: boolea
       );
     }
   }
-}
-
-function recentNews(props: {id: number, bilde: string, overskrift: string, innhold: string, tidspunkt: string}) {
-  return (
-    <NavLink exact to={"/sak/" + props.id}>
-      <div class="card">
-        <img class="card-img-top" src={props.bilde} alt="Alt-text"></img>
-        <div class="card-body">
-          <h5 class="card-title">{props.overskrift}</h5>
-          <p class="card-text">{props.innhold}</p>
-          <p class="card-text">
-            <small class="text-muted">Lagt til: {props.tidspunkt}</small>
-          </p>
-        </div>
-      </div>
-    </NavLink>
-  );
 }

@@ -53,7 +53,7 @@ export default class News extends Component<
     } else {
       return (
         <div className="mx-4 my-4">
-          <div class="card-columns">{items.map(temp => newsCard(temp))}</div>
+          <div className="card-columns">{items.map(temp => newsCard(temp))}</div>
         </div>
       );
     }
@@ -62,22 +62,22 @@ export default class News extends Component<
 
 function newsCard(props:{sak_id: number, bilde: string, overskrift: string, innhold: string, tidspunkt: string}) {
   return (
-    <div class="card rounded-0 border-0 mb-4">
+    <div className="card rounded-0 border-0 mb-4" key={props.sak_id}>
       <NavLink
         className="nav-link newsFont m-0 p-0"
         exact
         to={"/sak/" + props.sak_id}
       >
         <img
-          class="card-img-top rounded-0"
+          className="card-img-top rounded-0"
           src={props.bilde}
           alt="Alt-text"
         ></img>
-        <div class="card-body">
-          <h5 class="card-title">{props.overskrift}</h5>
-          <p class="card-text">{props.innhold.substring(0, 80) + "..."}</p>
-          <p class="card-text">
-            <small class="text-muted">
+        <div className="card-body">
+          <h5 className="card-title">{props.overskrift}</h5>
+          <p className="card-text">{props.innhold.substring(0, 80) + "..."}</p>
+          <p className="card-text">
+            <small className="text-muted">
               Sist oppdatert:
               {" " +
                 props.tidspunkt.substring(8, 10) +

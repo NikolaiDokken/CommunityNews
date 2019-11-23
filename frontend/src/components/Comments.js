@@ -26,11 +26,11 @@ export default class Comments extends Component<
   }
 
   submitComment = () => {
-    if (this.state.kommentar.length == 0 || this.state.kommentar.length > 200) {
+    if (this.state.kommentar.length === 0 || this.state.kommentar.length > 200) {
       alert("Kommenarer må være mellom 0 og 200 tegn");
       return;
     } else if (
-      this.state.brukernavn == "" ||
+      this.state.brukernavn === "" ||
       this.state.brukernavn.length > 20
     ) {
       alert("Brukernavn må være mellom 0 og 20 tegn");
@@ -53,23 +53,23 @@ export default class Comments extends Component<
     return (
       <div className="text-box mt-5">
         <form>
-          <div class="form-group">
+          <div className="form-group">
             <label>Brukernavn</label>
             <input
               name="brukernavn"
               onChange={this.handleChange}
               type="text"
-              class="form-control"
+              className="form-control"
               placeholder="Dette vil vises sammen med din kommentar"
             ></input>
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <label>Kommentar</label>
             <textarea
               name="kommentar"
               onChange={this.handleChange}
               type="text"
-              class="form-control"
+              className="form-control"
               placeholder="Skriv inn din kommentar"
               rows="3"
             ></textarea>
@@ -79,7 +79,7 @@ export default class Comments extends Component<
             <button
               type="button"
               onClick={this.submitComment}
-              class="btn btn-primary"
+              className="btn btn-primary"
               style={{ height: "40px" }}
             >
               Post
@@ -88,12 +88,12 @@ export default class Comments extends Component<
         </form>
         <h3>Kommentarer</h3>
 
-        {this.state.comments.map(kommentar => (
-          <div class="card mb-3">
-            <div class="card-header">
+        {this.state.comments.map((kommentar, i) => (
+          <div className="card mb-3" key={i}>
+            <div className="card-header">
               <strong>{kommentar.brukernavn}</strong>
             </div>
-            <div class="card-body p-2">
+            <div className="card-body p-2">
               <p>{kommentar.kommentar}</p>
             </div>
           </div>

@@ -4,9 +4,7 @@ import React, { Component } from "react";
 import Navbar from "./Navbar.js";
 import Footer from "./Footer.js";
 import {
-  registerArticle,
   getAllArticles,
-  updateArticle,
   deleteArticleDB,
   getCategories
 } from "../Service.js";
@@ -49,10 +47,10 @@ export default class Register extends Component<
       return (
         <div>
           <Navbar />
-          <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-              <h1 class="display-4">Registrer en sak!</h1>
-              <p class="lead">
+          <div className="jumbotron jumbotron-fluid">
+            <div className="container">
+              <h1 className="display-4">Registrer en sak!</h1>
+              <p className="lead">
                 Her kan du laste opp en nyhetssak til vår nettside.
               </p>
             </div>
@@ -100,9 +98,9 @@ class Edit extends Component<
       return (
         <div className="mx-5">
           <h1>Rediger/Slett sak</h1>
-          <div class="accordion" id="accordionExample">
+          <div className="accordion" id="accordionExample">
             {items.map(sak => (
-              <EditCard sak={sak} kategorier={this.props.kategorier} />
+              <EditCard sak={sak} kategorier={this.props.kategorier} key={sak.sak_id}/>
             ))}
           </div>
         </div>
@@ -131,12 +129,12 @@ class EditCard extends Component<{ sak: Object, kategorier: Array<Object> }> {
 
   render() {
     return (
-      <div class="card">
-        <div class="card-header" id={"headingOne"}>
+      <div className="card">
+        <div className="card-header" id={"headingOne"}>
           <div className="row">
-            <h2 class="mb-0">
+            <h2 className="mb-0">
               <button
-                class="btn btn-link"
+                className="btn btn-link"
                 type="button"
                 data-toggle="collapse"
                 data-target={"#collapse" + this.props.sak.sak_id}
@@ -152,10 +150,10 @@ class EditCard extends Component<{ sak: Object, kategorier: Array<Object> }> {
                   : this.props.sak.overskrift}
               </button>
             </h2>
-            <div class="ml-auto">
+            <div className="ml-auto">
               <button
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-danger"
                 onClick={this.deleteArticle}
               >
                 Slett sak
@@ -166,11 +164,11 @@ class EditCard extends Component<{ sak: Object, kategorier: Array<Object> }> {
 
         <div
           id={"collapse" + this.props.sak.sak_id}
-          class="collapse"
+          className="collapse"
           aria-labelledby="headingOne"
           data-parent="#accordionExample"
         >
-          <div class="card-body">
+          <div className="card-body">
             <RegisterForm
               sak={this.props.sak}
               kategorier={this.props.kategorier}

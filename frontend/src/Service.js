@@ -1,3 +1,5 @@
+// @flow
+
 import axios from "axios";
 
 export function getAllArticles() {
@@ -40,7 +42,6 @@ export function getArticle(id) {
   return axios
     .get("http://localhost:8080/sak/" + id)
     .then(res => {
-      const items = res.data[0];
       console.log(res.data[0]);
       return res.data[0];
     })
@@ -55,7 +56,6 @@ export function registerArticle(state) {
     .then(res => {
       console.log(res);
       console.log(res.data);
-      
     })
     .catch(error => {
       console.log(error.response);

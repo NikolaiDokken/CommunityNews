@@ -1,3 +1,5 @@
+// @flow
+
 const Dao = require("./dao.js");
 module.exports = class Comment extends Dao {
   getAll(sak_id, callback) {
