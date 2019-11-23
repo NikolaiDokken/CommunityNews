@@ -20,7 +20,6 @@ export default class Navbar extends Component<
       currentKategori: 0,
       searchResults: []
     };
-    this.showCategoryName = this.showCategoryName.bind(this);
   }
 
   componentDidMount() {
@@ -47,17 +46,6 @@ export default class Navbar extends Component<
   clear = (event: any) => {
     event.target.value = "";
     this.setState({ searchResults: [] });
-  };
-
-  showCategoryName = () => {
-    if (this.state.currentKategori == 0 || this.state.kategorier == undefined) {
-      return "Kategorier";
-    } else {
-      console.log(this.state.currentKategori + "curr");
-      return this.state.kategorier.find(
-        kategori => kategori.kategori_id == this.state.currentKategori
-      ).kategori_navn;
-    }
   };
 
   render() {
@@ -111,7 +99,13 @@ export default class Navbar extends Component<
                 role="button"
                 data-toggle="dropdown"
               >
-                {this.showCategoryName()}
+                {this.state.currentKategori == 0
+                  ? "Kategori"
+                  : this.state.kategorier.map(kategori =>
+                      kategori.kategori_id == this.state.currentKategori
+                        ? kategori.kategori_navn
+                        : ""
+                    )}
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 {this.state.kategorier.map(kategori => (
