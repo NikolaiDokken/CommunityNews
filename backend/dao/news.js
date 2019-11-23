@@ -33,7 +33,7 @@ module.exports = class News extends Dao {
 
   getOne(id, callback) {
     super.query(
-      "SELECT forfatter, overskrift, innhold, tidspunkt, bilde, kategori_navn, viktighet, visninger FROM sak JOIN kategori USING(kategori_id) WHERE sak_id=?",
+      "SELECT forfatter, overskrift, innhold, tidspunkt, bilde, kategori_navn, kategori_id, viktighet, visninger FROM sak JOIN kategori USING(kategori_id) WHERE sak_id=?",
       [id],
       callback
     );

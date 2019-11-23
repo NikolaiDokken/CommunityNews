@@ -1,6 +1,8 @@
 // @flow
 
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
+
 import "../styles/stylesheet.css";
 import "../styles/Article.css";
 import Navbar from "./Navbar";
@@ -15,6 +17,7 @@ type Sak = {
   forfatter: string,
   tidspunkt: string,
   kategori_navn: string,
+  kategori_id: number,
   visninger: number
 };
 
@@ -69,7 +72,12 @@ export default class Article extends Component<
       return (
         <div>
           <Navbar />
-          <img className="mt-3" id="image" src={sak.bilde} alt={sak.overskrift}></img>
+          <img
+            className="mt-3"
+            id="image"
+            src={sak.bilde}
+            alt={sak.overskrift}
+          ></img>
           <div className="text-box">
             <h1>{sak.overskrift}</h1>
             <div className="row">
@@ -85,12 +93,14 @@ export default class Article extends Component<
                   sak.tidspunkt.substring(11, 16)}
               </p>
               <div className="col">
-                <span
-                  className="badge badge-warning"
-                  style={{ height: "25px", width: "110px", fontSize: "15px" }}
-                >
-                  {sak.kategori_navn}
-                </span>
+                <NavLink exact to={"/kategori/" + sak.kategori_id}>
+                  <span
+                    className="badge badge-warning"
+                    style={{ height: "25px", width: "110px", fontSize: "15px" }}
+                  >
+                    {sak.kategori_navn}
+                  </span>
+                </NavLink>
               </div>
 
               <div className="ml-auto mr-3">Visninger: {sak.visninger}</div>
