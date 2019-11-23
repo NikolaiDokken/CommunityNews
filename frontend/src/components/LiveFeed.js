@@ -1,11 +1,13 @@
+// @flow
+
 import React, { Component } from "react";
 import "../styles/LiveFeed.css";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { getFrontPageNews } from "../Service";
 
-export default class LiveFeed extends Component {
-  constructor(props) {
+export default class LiveFeed extends Component<{},{error: any, isLoaded: boolean, overskrifter: Array<string>}> {
+  constructor(props: any) {
     super(props);
     this.state = {
       error: null,
@@ -53,7 +55,7 @@ export default class LiveFeed extends Component {
   }
 }
 
-function recentNews(props) {
+function recentNews(props: {id: number, bilde: string, overskrift: string, innhold: string, tidspunkt: string}) {
   return (
     <NavLink exact to={"/sak/" + props.id}>
       <div class="card">

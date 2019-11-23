@@ -5,7 +5,14 @@ import { NavLink } from "react-router-dom";
 import "../styles/News.css";
 import { getFrontPageNews, getCategoryArticles } from "../Service.js";
 
-export default class News extends Component {
+export default class News extends Component<
+  { kategori: number },
+  {
+    error: any,
+    isLoaded: boolean,
+    items: Array<Object>
+  }
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +60,7 @@ export default class News extends Component {
   }
 }
 
-function newsCard(props) {
+function newsCard(props:{sak_id: number, bilde: string, overskrift: string, innhold: string, tidspunkt: string}) {
   return (
     <div class="card rounded-0 border-0 mb-4">
       <NavLink

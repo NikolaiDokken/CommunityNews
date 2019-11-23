@@ -1,10 +1,15 @@
+// @flow
+
 import React, { Component } from "react";
 
 import "../styles/Article.css";
 import { getComments, postComment } from "../Service";
 
-export default class Comments extends Component {
-  constructor(props) {
+export default class Comments extends Component<
+  { sak_id: number },
+  { comments: ?Array<Object>, brukernavn: string, kommentar: string }
+> {
+  constructor(props: any) {
     super(props);
     this.state = {
       comments: [],
@@ -20,7 +25,7 @@ export default class Comments extends Component {
     });
   }
 
-  submitComment() {
+  submitComment = () => {
     if (this.state.kommentar.length == 0 || this.state.kommentar.length > 200) {
       alert("Kommenarer må være mellom 0 og 200 tegn");
       return;
@@ -40,7 +45,7 @@ export default class Comments extends Component {
     }
   }
 
-  handleChange = event => {
+  handleChange = (event: any) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/stylesheet.css";
@@ -6,7 +8,7 @@ import LiveFeed from "./LiveFeed";
 import Footer from "./Footer.js";
 import News from "./News";
 
-export default class Home extends Component {
+export default class Home extends Component<{ match: { params: { id: number } } }> {
   render() {
     console.log();
     return (

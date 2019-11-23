@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from "react";
 import "../styles/stylesheet.css";
 import "../styles/Article.css";
@@ -7,10 +9,25 @@ import Footer from "./Footer";
 import axios from "axios";
 import { getArticle, updateArticleViews } from "../Service";
 
-export default class Article extends Component<{
-  match: { params: { id: number } }
-}> {
-  constructor(props) {
+type Sak = {|
+  overskrift?: string,
+  innhold?: string,
+  bilde?: string,
+  forfatter?: string,
+  tidspunkt?: string,
+  kategori_navn?: string,
+  visninger?: number
+|};
+
+export default class Article extends Component<
+  { match: { params: { id: number } } },
+  {
+    error: any,
+    isLoaded: boolean,
+    sak: Array<Sak>
+  }
+> {
+  constructor(props: any) {
     super(props);
     this.state = {
       error: null,
@@ -20,7 +37,7 @@ export default class Article extends Component<{
   }
 
   updateViews() {
-    return new Promise((resolve, reject) => {
+    return new Promise<any>((resolve: any, reject: any) => {
       setTimeout(() => {
         resolve();
       }, 10000);
@@ -28,16 +45,24 @@ export default class Article extends Component<{
   }
 
   componentDidMount() {
-    getArticle(this.props.match.params.id).then(res => {
-      this.setState({
-        sak: res
+    getArticle(this.props.match.params.id)
+      .then(res => {
+        this.setState({
+          sak: res
+        });
+        console.log("sakID" + res.sak_id);
+        this.setState({ isLoaded: true });
+      })
+      .catch(error => {
+        this.setState({ error });
       });
-      console.log("sakID" + res.sak_id);
-      this.setState({ isLoaded: true });
-    });
-    this.updateViews().then(() => {
-      updateArticleViews(this.props.match.params.id);
-    });
+    this.updateViews()
+      .then(() => {
+        updateArticleViews(this.props.match.params.id);
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
   }
 
   render() {

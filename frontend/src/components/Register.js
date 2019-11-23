@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from "react";
 import Navbar from "./Navbar.js";
 import Footer from "./Footer.js";

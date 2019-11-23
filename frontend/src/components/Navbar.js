@@ -5,8 +5,15 @@ import { NavLink } from "react-router-dom";
 import "../styles/Navbar.css";
 import { getCategories, getSearch } from "../Service.js";
 
-export default class Navbar extends Component {
-  constructor(props) {
+export default class Navbar extends Component<
+  { kategori?: number },
+  {
+    kategorier: Array<{ kategori_id: number, kategori_navn: string }>,
+    currentKategori: number,
+    searchResults: Array<{sak_id: number, overskrift: string}>
+  }
+> {
+  constructor(props: any) {
     super(props);
     this.state = {
       kategorier: [],
@@ -24,11 +31,9 @@ export default class Navbar extends Component {
     });
   }
 
-  componentWillUnmount() {
-    
-  }
+  componentWillUnmount() {}
 
-  onSearch = event => {
+  onSearch = (event: any) => {
     var search = event.target.value;
     if (search.length > 0) {
       getSearch(search).then(searchResults => {
@@ -39,7 +44,7 @@ export default class Navbar extends Component {
     }
   };
 
-  clear = event => {
+  clear = (event: any) => {
     event.target.value = "";
     this.setState({ searchResults: [] });
   };
