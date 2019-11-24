@@ -75,7 +75,7 @@ function newsCard(props:{sak_id: number, bilde: string, overskrift: string, innh
         ></img>
         <div className="card-body">
           <h5 className="card-title">{props.overskrift}</h5>
-          <p className="card-text">{props.innhold.substring(0, 80) + "..."}</p>
+          <p className="card-text">{props.innhold.substring(0, 80).replace( /(<([^>]+)>)/ig, '') + "..."}</p>
           <p className="card-text">
             <small className="text-muted">
               Sist oppdatert:

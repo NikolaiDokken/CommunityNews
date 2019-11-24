@@ -62,6 +62,10 @@ export default class Article extends Component<
     }
   }
 
+  formatText(text) {
+    document.getElementById("articleContent").innerHTML += text;
+  }
+
   render() {
     const { error, isLoaded, sak } = this.state;
     if (error) {
@@ -106,7 +110,11 @@ export default class Article extends Component<
               <div className="ml-auto mr-3">Visninger: {sak.visninger}</div>
             </div>
 
-            <p className="mx-auto">{sak.innhold}</p>
+            <div
+              className="mx-auto"
+              id="articleContent"
+              dangerouslySetInnerHTML={{ __html: sak.innhold }}
+            ></div>
           </div>
           <Comments sak_id={this.props.match.params.id}></Comments>
           <Footer></Footer>

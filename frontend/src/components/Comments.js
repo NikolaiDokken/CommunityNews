@@ -69,6 +69,7 @@ export default class Comments extends Component<
       <div className="text-box mt-5">
         <form>
           <div className="form-group">
+            <h4>Legg igjen en kommentar</h4>
             <label>Brukernavn</label>
             <input
               name="brukernavn"
@@ -103,16 +104,18 @@ export default class Comments extends Component<
         </form>
         <h3>Kommentarer</h3>
 
-        {this.state.comments.map((kommentar, i) => (
-          <div className="card mb-3" key={i}>
-            <div className="card-header">
-              <strong>{kommentar.brukernavn}</strong>
-            </div>
-            <div className="card-body p-2">
-              <p>{kommentar.kommentar}</p>
-            </div>
-          </div>
-        ))}
+        {this.state.comments.length === 0
+          ? "Vær den første til å kommentere dette innlegget!"
+          : this.state.comments.map((kommentar, i) => (
+              <div className="card mb-3" key={i}>
+                <div className="card-header">
+                  <strong>{kommentar.brukernavn}</strong>
+                </div>
+                <div className="card-body p-2">
+                  <p>{kommentar.kommentar}</p>
+                </div>
+              </div>
+            ))}
       </div>
     );
   }
