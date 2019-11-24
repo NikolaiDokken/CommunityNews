@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-export default class Alert extends Component<{errorName: string, description: String, onClose: function}> {
+export default class Alert extends Component<{errorName: string, description: String}> {
   constructor(props: any) {
     super(props);
   }

@@ -25,10 +25,9 @@ export default class Footer extends Component {
             <div className="row">
               <p className="col-sm">
                 <i className="fa fa-home mr-3"></i>
-                <a href="https://www.google.no/maps/place/Blarney+Castle/@51.9290955,-8.5730734,17z/data=!3m1!4b1!4m5!3m4!1s0x4844903d38df44b7:0xafb7c3638c8b47c8!8m2!3d51.9290922!4d-8.5708847">
+                <a href="https://www.google.com/maps/place/Trondheim/@63.4187959,10.3687233,12z/data=!3m1!4b1!4m5!3m4!1s0x466d319747037e53:0xbf7c8288f3cf3d4!8m2!3d63.4305149!4d10.3950528">
                   {" "}
-                  Monacnapa, Blarney
-                  <br /> Co. Cork, Irland
+                  Trondheim, Norge
                 </a>
               </p>
               <p className="col-sm">
@@ -53,7 +52,7 @@ export default class Footer extends Component {
           </div>
           <div className="col-sm mx-5 text-center align-self-center">
             <a
-              href="https://www.facebook.com/nikolai.dokken.3"
+              href="https://www.facebook.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -99,7 +98,7 @@ export default class Footer extends Component {
           style={{ backgroundColor: "#313131" }}
         >
           <hr className="w-100" />
-          <p>© 2019 Copyright: Irish Ltd.</p>
+          <p>© 2019 Copyright: IngNytt</p>
           <p>Sitemap | Betingelser og vilkår | Personvern</p>
         </div>
       </footer>
