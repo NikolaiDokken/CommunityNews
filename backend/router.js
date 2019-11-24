@@ -14,7 +14,7 @@ module.exports = function(app, pool, news, category, comment) {
   });
 
   // GET alle saker i sak
-  app.get("/sak/:offset", (req, res) => {
+  app.get("/saker/:offset", (req, res) => {
     console.log("/sak: fikk GET request fra klient");
     news.getAll(req.params.offset, (status, data) => {
       res.status(status);

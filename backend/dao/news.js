@@ -2,7 +2,7 @@ const Dao = require("./dao.js");
 
 module.exports = class News extends Dao {
   getAll(offset, callback) {
-    super.query("SELECT * FROM sak ORDER BY tidspunkt LIMIT " + offset + ", 10", [], callback);
+    super.query("SELECT * FROM sak ORDER BY tidspunkt DESC LIMIT " + offset + ", 10", [], callback);
   }
 
   getAllByImportance(importance, callback) {

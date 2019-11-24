@@ -22,8 +22,8 @@ export default class Register extends Component<
   }
 
   componentDidMount() {
-    getCategories().then(kategorier => {
-      this.setState({ kategorier });
+    getCategories().then(res => {
+      this.setState({ kategorier: res.data });
       this.setState({ isLoaded: true });
     });
   }
@@ -79,11 +79,19 @@ class Edit extends Component<
     };
   }
 
+  getArticles(offset) {
+    getAllArticles(offset)
+      .then(res => {
+        this.setState({ items: res.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   componentDidMount() {
-    getAllArticles(0).then(items => {
-      this.setState({ items });
-      this.setState({ isLoaded: true });
-    });
+    this.getArticles(0);
+    this.setState({ isLoaded: true });
   }
 
   getNextPage(nextPage) {
@@ -91,22 +99,16 @@ class Edit extends Component<
       nextPage &&
       (this.state.items.length === 0 || this.state.items.length < 10)
     ) {
-      getAllArticles(0 * 10).then(items => {
-        this.setState({ items });
-        this.setState({ offset: 0 });
-      });
+      this.getArticles(0);
+      this.setState({ offset: 0 });
     } else if (!nextPage && this.state.offset === 0) {
       return;
     } else if (nextPage) {
-      getAllArticles((this.state.offset + 1) * 10).then(items => {
-        this.setState({ items });
-        this.setState({ offset: this.state.offset + 1 });
-      });
+      this.getArticles((this.state.offset + 1) * 10);
+      this.setState({ offset: this.state.offset + 1 });
     } else {
-      getAllArticles((this.state.offset - 1) * 10).then(items => {
-        this.setState({ items });
-        this.setState({ offset: this.state.offset - 1 });
-      });
+      this.getArticles((this.state.offset - 1) * 10);
+      this.setState({ offset: this.state.offset - 1 });
     }
   }
 
@@ -130,11 +132,12 @@ class Edit extends Component<
             ))}
             {Array(10 - items.length)
               .fill()
-              .map(card => (
-                <div className="card">
+              .map((card, index) => (
+                <div className="card" key={index}>
                   <div className="card-header" id={"headingOne"}>
                     <div className="row">
-                      <h2 className="mb-0" style={{height: "38px"}}>
+                      <h2 className="mb-0" style={{ height: "38px" }}>
+                        {null}
                       </h2>
                     </div>
                   </div>
@@ -144,7 +147,7 @@ class Edit extends Component<
           <div className="row mt-2 justify-content-center">
             <button
               type="button"
-              class="btn btn-primary btn-arrow-left mx-3"
+              className="btn btn-primary btn-arrow-left mx-3"
               onClick={() => this.getNextPage(false)}
             >
               Forrige side
@@ -152,7 +155,7 @@ class Edit extends Component<
             <div>Side: {this.state.offset + 1}</div>
             <button
               type="button"
-              class="btn btn-primary btn-arrow-right mx-3"
+              className="btn btn-primary btn-arrow-right mx-3"
               onClick={() => this.getNextPage(true)}
             >
               Neste Side
@@ -173,10 +176,14 @@ class EditCard extends Component<{ sak: Object, kategorier: Array<Object> }> {
   // Handles onclick for delete button
   deleteArticle = () => {
     if (window.confirm("Er du sikker på at du vil slette denne saken?")) {
-      deleteArticleDB(this.props.sak.sak_id).then(res => {
-        alert("Saken din er slettet!");
-        window.location.reload(true);
-      });
+      deleteArticleDB(this.props.sak.sak_id)
+        .then(res => {
+          alert("Saken din er slettet!");
+          window.location.reload(true);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     } else {
       // Do nothing
     }

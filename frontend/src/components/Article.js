@@ -46,7 +46,7 @@ export default class Article extends Component<
     getArticle(this.props.match.params.id)
       .then(res => {
         this.setState({
-          sak: res
+          sak: res.data[0]
         });
         this.setState({ isLoaded: true });
       })

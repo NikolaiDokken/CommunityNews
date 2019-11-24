@@ -7,7 +7,11 @@ import { getComments, postComment } from "../Service";
 
 export default class Comments extends Component<
   { sak_id: number },
-  { comments: Array<{brukernavn: string, kommentar: string}>, brukernavn: string, kommentar: string }
+  {
+    comments: Array<{ brukernavn: string, kommentar: string }>,
+    brukernavn: string,
+    kommentar: string
+  }
 > {
   constructor(props: any) {
     super(props);
@@ -20,13 +24,20 @@ export default class Comments extends Component<
   }
 
   componentDidMount() {
-    getComments(this.props.sak_id).then(comments => {
-      this.setState({ comments });
-    });
+    getComments(this.props.sak_id)
+      .then(res => {
+        this.setState({ comments: res.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   submitComment = () => {
-    if (this.state.kommentar.length === 0 || this.state.kommentar.length > 200) {
+    if (
+      this.state.kommentar.length === 0 ||
+      this.state.kommentar.length > 200
+    ) {
       alert("Kommenarer må være mellom 0 og 200 tegn");
       return;
     } else if (
@@ -37,13 +48,17 @@ export default class Comments extends Component<
       return;
     }
     if (window.confirm("Er du sikker på at du publisere denne kommentaren?")) {
-      postComment(this.props.sak_id, this.state).then(res => {
-        window.location.reload();
-      });
+      postComment(this.props.sak_id, this.state)
+        .then(res => {
+          window.location.reload();
+        })
+        .catch(error => {
+          console.log(error);
+        });
     } else {
       // Do nothing
     }
-  }
+  };
 
   handleChange = (event: any) => {
     this.setState({ [event.target.name]: event.target.value });

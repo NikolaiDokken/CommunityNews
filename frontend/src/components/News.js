@@ -25,8 +25,8 @@ export default class News extends Component<
   componentDidMount() {
     if (this.props.kategori === undefined) {
       getFrontPageNews()
-        .then(items => {
-          this.setState({ items });
+        .then(res => {
+          this.setState({ items: res.data });
           this.setState({ isLoaded: true });
         })
         .catch(error => {
@@ -34,8 +34,8 @@ export default class News extends Component<
         });
     } else {
       getCategoryArticles(this.props.kategori)
-        .then(items => {
-          this.setState({ items });
+        .then(res => {
+          this.setState({ items: res.data });
           this.setState({ isLoaded: true });
         })
         .catch(error => {

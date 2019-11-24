@@ -111,7 +111,7 @@ export default class RegisterForm extends Component<
         window.location.hash = "";
       })
       .catch(error => {
-        console.log(error.response);
+        console.log(error);
       });
   };
 
@@ -127,7 +127,7 @@ export default class RegisterForm extends Component<
         window.location.reload();
       })
       .catch(error => {
-        console.log(error.response);
+        console.log(error);
       });
   };
 

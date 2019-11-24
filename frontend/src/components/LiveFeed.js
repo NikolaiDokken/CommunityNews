@@ -5,7 +5,10 @@ import "../styles/LiveFeed.css";
 import { NavLink } from "react-router-dom";
 import { getFrontPageNews } from "../Service";
 
-export default class LiveFeed extends Component<{},{error: any, isLoaded: boolean, overskrifter: Array<string>}> {
+export default class LiveFeed extends Component<
+  {},
+  { error: any, isLoaded: boolean, overskrifter: Array<string> }
+> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -16,11 +19,21 @@ export default class LiveFeed extends Component<{},{error: any, isLoaded: boolea
   }
 
   componentDidMount() {
-    getFrontPageNews().then(res => {
-      const overskrifter = [res[0], res[1], res[2], res[3], res[4]];
-      this.setState({ overskrifter });
-      this.setState({ isLoaded: true });
-    });
+    getFrontPageNews()
+      .then(res => {
+        const overskrifter = [
+          res.data[0],
+          res.data[1],
+          res.data[2],
+          res.data[3],
+          res.data[4]
+        ];
+        this.setState({ overskrifter });
+        this.setState({ isLoaded: true });
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
   }
 
   render() {
@@ -31,11 +44,19 @@ export default class LiveFeed extends Component<{},{error: any, isLoaded: boolea
     } else {
       return (
         <div className="marquee">
-          <div><strong>SISTE NYTT</strong></div>
+          <div>
+            <strong>SISTE NYTT</strong>
+          </div>
           <p>
             {this.state.overskrifter.map((overskrift, index) => (
-              <NavLink className="mr-5" exact to={"/sak/" + overskrift.sak_id} style={{textDecorationLine: "none"}} key={index}>
-                <var style={{ color: "#1b1b1b", textDecorationStyle: "solid"}}>
+              <NavLink
+                className="mr-5"
+                exact
+                to={"/sak/" + overskrift.sak_id}
+                style={{ textDecorationLine: "none" }}
+                key={index}
+              >
+                <var style={{ color: "#1b1b1b", textDecorationStyle: "solid" }}>
                   <strong>
                     {overskrift.tidspunkt.substring(8, 10) +
                       "." +

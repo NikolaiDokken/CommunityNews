@@ -24,20 +24,28 @@ export default class Navbar extends Component<
 
   componentDidMount() {
     // console.log(this.props.kategori);
-    getCategories().then(kategorier => {
-      this.setState({ kategorier });
-      if (this.props.kategori !== undefined) {
-        this.setState({ currentKategori: this.props.kategori });
-      }
-    });
+    getCategories()
+      .then(res => {
+        this.setState({ kategorier: res.data });
+        if (this.props.kategori !== undefined) {
+          this.setState({ currentKategori: this.props.kategori });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   onSearch = (event: any) => {
     var search = event.target.value;
     if (search.length > 0) {
-      getSearch(search).then(searchResults => {
-        this.setState({ searchResults });
-      });
+      getSearch(search)
+        .then(res => {
+          this.setState({ searchResults: res.data });
+        })
+        .catch(error => {
+          console.log(error);
+        });
     } else {
       this.setState({ searchResults: [] });
     }
@@ -97,12 +105,18 @@ export default class Navbar extends Component<
                 href="#"
                 id="navbarDropdown"
                 data-toggle="dropdown"
-                style={{color: "white", backgroundColor: "black", border: "none", fontSize: "20px"}}
+                style={{
+                  color: "white",
+                  backgroundColor: "black",
+                  border: "none",
+                  fontSize: "20px"
+                }}
               >
                 {this.state.currentKategori === 0
                   ? "KATEGORI"
                   : this.state.kategorier.map(kategori =>
-                      kategori.kategori_id === parseInt(this.state.currentKategori)
+                      kategori.kategori_id ===
+                      parseInt(this.state.currentKategori)
                         ? kategori.kategori_navn.toUpperCase()
                         : ""
                     )}
@@ -143,6 +157,7 @@ export default class Navbar extends Component<
             <div className="searchResults" style={{ display: "block" }}>
               {this.state.searchResults.map((result, i) => (
                 <div
+                  key={i}
                   style={
                     i % 2 === 0
                       ? {
