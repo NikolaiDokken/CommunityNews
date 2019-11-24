@@ -23,7 +23,7 @@ export default class News extends Component<
   }
 
   componentDidMount() {
-    if (this.props.kategori === undefined) {
+    if (this.props.kategori === 0) {
       getFrontPageNews()
         .then(res => {
           this.setState({ items: res.data });

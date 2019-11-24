@@ -21,7 +21,11 @@ export default class Home extends Component<{
           }
         />
         <LiveFeed />
-        <News kategori={this.props.match.params.id}/>
+        <News kategori={
+            window.location.href.indexOf("kategori") <= -1
+              ? 0
+              : this.props.match.params.id
+          }/>
         <Footer />
       </div>
     );
