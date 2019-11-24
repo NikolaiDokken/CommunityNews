@@ -10,16 +10,14 @@ variables:
   MYSQL_ROOT_PASSWORD: password
   DOCKER_TLS_CERTDIR: ""
 
-# Install node libraries
-before_script:
-  - cd backend
-  - npm install
-
 # Run JEST tests
 run_tests:
   stage: test
   script:
     - npm test
+    - cd backend && npm install && npm run test 
+    - cd ../frontend && npm install && npm run test
+
   artifacts:
     paths:
       - backend/coverage/
@@ -33,6 +31,11 @@ pages:
     - mkdir .public
     - cp -r coverage/* .public
     - mv .public ../public
+    - cd ../backend
+    - mkdir .public
+    - cp -r coverage/* .public
+    - mv .public ../public
+
   artifacts:
     paths:
       - public
