@@ -1,8 +1,8 @@
 const Dao = require("./dao.js");
 
 module.exports = class News extends Dao {
-  getAll(callback) {
-    super.query("SELECT * FROM sak ORDER BY tidspunkt", [], callback);
+  getAll(offset, callback) {
+    super.query("SELECT * FROM sak ORDER BY tidspunkt LIMIT " + offset + ", 10", [], callback);
   }
 
   getAllByImportance(importance, callback) {
@@ -41,6 +41,7 @@ module.exports = class News extends Dao {
 
   createOne(json, callback) {
     var val = [
+      json.brukernavn,
       json.overskrift,
       json.innhold,
       json.bilde,
@@ -48,7 +49,7 @@ module.exports = class News extends Dao {
       json.viktighet
     ];
     super.query(
-      "insert into sak (overskrift, innhold, bilde, kategori_id, viktighet) values (?,?,?,?,?)",
+      "insert into sak (forfatter, overskrift, innhold, bilde, kategori_id, viktighet) values (?,?,?,?,?,?)",
       val,
       callback
     );
@@ -56,15 +57,17 @@ module.exports = class News extends Dao {
 
   updateOne(id, json, callback) {
     var val = [
+      json.brukernavn,
       json.overskrift,
       json.innhold,
       json.bilde,
       json.kategori_id,
       json.viktighet,
+      json.tidspunkt,
       id
     ];
     super.query(
-      "UPDATE sak SET overskrift=?, innhold=?, bilde=?, kategori_id=?, viktighet=? WHERE sak_id=?",
+      "UPDATE sak SET forfatter=?, overskrift=?, innhold=?, bilde=?, kategori_id=?, viktighet=?, tidspunkt=? WHERE sak_id=?",
       val,
       callback
     );

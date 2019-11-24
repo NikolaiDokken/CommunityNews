@@ -2,9 +2,9 @@
 
 import axios from "axios";
 
-export function getAllArticles() {
+export function getAllArticles(offset) {
   return axios
-    .get("http://localhost:8080/sak")
+    .get("http://localhost:8080/sak/" + offset)
     .then(res => {
       console.log(res.data);
       return res.data;

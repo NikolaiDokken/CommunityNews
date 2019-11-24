@@ -1,3 +1,15 @@
 .newsFont div {
   color: black;
 }
+
+
+@media only screen and (max-width: 900px) {
+  .card-columns {
+    column-count: 2;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .card-columns {
+    column-count: 1;
+  }
+}

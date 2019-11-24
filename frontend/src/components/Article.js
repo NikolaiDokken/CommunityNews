@@ -82,7 +82,7 @@ export default class Article extends Component<
             <h1>{sak.overskrift}</h1>
             <div className="row">
               <p className="col" id="info-text">
-                Av {sak.forfatter} |{" "}
+                Av {sak.forfatter === null ? "Anonym" : sak.forfatter} |{" "}
                 {" " +
                   sak.tidspunkt.substring(8, 10) +
                   "." +

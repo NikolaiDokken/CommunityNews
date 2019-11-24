@@ -6,7 +6,6 @@ import Navbar from "./Navbar.js";
 import LiveFeed from "./LiveFeed";
 import Footer from "./Footer.js";
 import News from "./News";
-import { getCategories } from "../Service";
 
 export default class Home extends Component<{
   match: { params: { id: number } }

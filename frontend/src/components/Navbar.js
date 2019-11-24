@@ -92,21 +92,21 @@ export default class Navbar extends Component<
               </NavLink>
             </li>
             <li className="nav-item dropdown my-auto custom-nav-text">
-              <a
-                className="nav-link dropdown-toggle"
+              <button
+                className="btn btn-secondary dropdown-toggle"
                 href="#"
                 id="navbarDropdown"
-                role="button"
                 data-toggle="dropdown"
+                style={{color: "white", backgroundColor: "black", border: "none", fontSize: "20px"}}
               >
-                {this.state.currentKategori == 0
-                  ? "Kategori"
+                {this.state.currentKategori === 0
+                  ? "KATEGORI"
                   : this.state.kategorier.map(kategori =>
-                      kategori.kategori_id == this.state.currentKategori
-                        ? kategori.kategori_navn
+                      kategori.kategori_id === parseInt(this.state.currentKategori)
+                        ? kategori.kategori_navn.toUpperCase()
                         : ""
                     )}
-              </a>
+              </button>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 {this.state.kategorier.map(kategori => (
                   <NavLink
@@ -124,7 +124,7 @@ export default class Navbar extends Component<
                     to={"/kategori/" + kategori.kategori_id}
                     key={kategori.kategori_id}
                   >
-                    {kategori.kategori_navn}
+                    {kategori.kategori_navn.toUpperCase()}
                   </NavLink>
                 ))}
               </div>

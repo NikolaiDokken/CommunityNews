@@ -1,15 +1,14 @@
 // @flow
 
 import React, { Component } from "react";
-import {
-  registerArticle,
-  updateArticle,
-} from "../Service.js";
+import { registerArticle, updateArticle } from "../Service.js";
+import Alert from "./Alert";
 import "../styles/RegisterForm.css";
 
 type Sak = {
   sak_id: number,
   overskrift: string,
+  forfatter: string,
   innhold: string,
   bilde: string,
   kategori_id: number,
@@ -27,10 +26,12 @@ export default class RegisterForm extends Component<
   {
     sak_id: number,
     overskrift: string,
+    brukernavn: string,
     innhold: string,
     bilde: string,
     kategori_id: number,
     viktighet: number,
+    tidspunkt: string,
     registrer: boolean,
     kategorier: Array<Kategori>
   }
@@ -40,35 +41,68 @@ export default class RegisterForm extends Component<
     this.state = {
       sak_id: this.props.sak.sak_id,
       overskrift: this.props.sak.overskrift,
+      brukernavn: this.props.sak.forfatter,
       innhold: this.props.sak.innhold,
       bilde: this.props.sak.bilde,
       kategori_id: this.props.sak.kategori_id,
       viktighet: this.props.sak.viktighet,
+      tidspunkt: "",
       registrer: this.props.registrer,
-      kategorier: this.props.kategorier
+      kategorier: this.props.kategorier,
+      inputError: 0
     };
     this.submitRegister = this.submitRegister.bind(this);
     this.submitUpdate = this.submitUpdate.bind(this);
+    this.resetError = this.resetError.bind(this);
+  }
+
+  componentDidMount() {
+    if (!this.props.registrer) {
+      var date = new Date();
+      this.setState({
+        tidspunkt:
+          "" +
+          date.getFullYear() +
+          "-" +
+          (date.getMonth() + 1) +
+          "-" +
+          date.getDate() +
+          " " +
+          date.getHours() +
+          ":" +
+          date.getMinutes() +
+          ":" +
+          date.getSeconds()
+      });
+    }
   }
 
   handleChange = (event: any) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  // Method for registering news Article
-  submitRegister = () => {
+  inputValidation() {
     // Check for form errors
     if (this.state.overskrift === "") {
-      alert("Artikkelen må ha en overskrift");
-      return;
+      this.setState({ inputError: 1 });
+      return false;
     } else if (this.state.innhold.length < 50) {
-      alert("Artikkelens innhold må være lengre enn 50 tegn");
-      return;
+      this.setState({ inputError: 2 });
+      return false;
     } else if (this.state.bilde === "") {
-      alert("Artikkelen må ha et bilde");
-      return;
+      this.setState({ inputError: 3 });
+      return false;
     } else if (this.state.kategori_id === 0) {
-      alert("Artikkelen må ha en kategori");
+      this.setState({ inputError: 4 });
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // Method for registering news Article
+  submitRegister = () => {
+    if (!this.inputValidation()) {
       return;
     }
     registerArticle(this.state)
@@ -83,20 +117,7 @@ export default class RegisterForm extends Component<
 
   // Method for editing newscase
   submitUpdate = () => {
-    console.log("Submitting update");
-
-    // Check for form errors
-    if (this.state.overskrift === "") {
-      alert("Artikkelen må ha en overskrift");
-      return;
-    } else if (this.state.innhold.length < 50) {
-      alert("Artikkelens innhold må være lengre enn 50 tegn");
-      return;
-    } else if (this.state.bilde === "") {
-      alert("Artikkelen må ha et bilde");
-      return;
-    } else if (this.state.kategori_id === 0) {
-      alert("Artikkelen må ha en kategori");
+    if (!this.inputValidation()) {
       return;
     }
 
@@ -119,10 +140,21 @@ export default class RegisterForm extends Component<
     }
   }
 
+  resetError() {
+    this.setState({ inputError: 0 });
+  }
+
   render() {
     return (
       <form>
         <div className="form-group mx-5">
+          {this.state.inputError === 1 ? (
+            <Alert
+              errorName="Overskrift er tom!"
+              description="En artikkel må ha en overskrift"
+              onClose={this.resetError}
+            />
+          ) : null}
           <label>Tittel</label>
           <input
             name="overskrift"
@@ -133,10 +165,31 @@ export default class RegisterForm extends Component<
             defaultValue={this.state.overskrift}
           ></input>
           <small id="emailHelp" className="form-text text-muted">
-            Denne vil vises på forsiden.
+            Denne vil vises på forsiden, gitt at artikkelen har viktighet 1.
           </small>
         </div>
         <div className="form-group mx-5">
+          <label>Brukernavn</label>
+          <input
+            name="brukernavn"
+            onChange={this.handleChange}
+            type="text"
+            className="form-control"
+            placeholder="Skriv inn navnet du vil skal vises på artikkelen"
+            defaultValue={this.state.brukernavn}
+          ></input>
+          <small id="emailHelp" className="form-text text-muted">
+            Denne kan også være blank dersom du ønsker å være anonym.
+          </small>
+        </div>
+        <div className="form-group mx-5">
+          {this.state.inputError === 2 ? (
+            <Alert
+              errorName="Tomt innhold!"
+              description="En artikkel må ha innhold lengre enn 50 tegn."
+              onClose={this.resetError}
+            />
+          ) : null}
           <label>Beskrivelse</label>
           <textarea
             name="innhold"
@@ -150,6 +203,13 @@ export default class RegisterForm extends Component<
         </div>
         <div className="row mx-auto justify-content-center">
           <div className="form-group mx-5">
+            {this.state.inputError === 3 ? (
+              <Alert
+                errorName="Mangler bilde!"
+                description="En artikkel trenger blikkfang"
+                onClose={this.resetError}
+              />
+            ) : null}
             <label>Bilde-URL</label>
             <input
               name="bilde"
@@ -161,6 +221,13 @@ export default class RegisterForm extends Component<
             ></input>
           </div>
           <div className="form-group mx-5">
+            {this.state.inputError === 4 ? (
+              <Alert
+                errorName="Ingen kategori!"
+                description="Det må vel gå an å plassere denne artikkelen i en kategori?"
+                onClose={this.resetError}
+              />
+            ) : null}
             <label>Kategori</label>
             <div className="dropdown">
               <button
@@ -174,7 +241,8 @@ export default class RegisterForm extends Component<
                 {this.state.kategori_id === 0
                   ? "Kategori"
                   : this.state.kategorier.find(
-                      kategori => kategori.kategori_id === this.state.kategori_id
+                      kategori =>
+                        kategori.kategori_id === this.state.kategori_id
                     ).kategori_navn}
               </button>
               <div

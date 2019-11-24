@@ -24,13 +24,22 @@ export default class Footer extends Component {
           <div className="col-sm mx-5 text-center align-self-center small">
             <div className="row">
               <p className="col-sm">
-                <i className="fa fa-home mr-3" ></i>
-                <a href="https://www.google.no/maps/place/Blarney+Castle/@51.9290955,-8.5730734,17z/data=!3m1!4b1!4m5!3m4!1s0x4844903d38df44b7:0xafb7c3638c8b47c8!8m2!3d51.9290922!4d-8.5708847"> Monacnapa, Blarney<br /> Co. Cork, Irland</a>
+                <i className="fa fa-home mr-3"></i>
+                <a href="https://www.google.no/maps/place/Blarney+Castle/@51.9290955,-8.5730734,17z/data=!3m1!4b1!4m5!3m4!1s0x4844903d38df44b7:0xafb7c3638c8b47c8!8m2!3d51.9290922!4d-8.5708847">
+                  {" "}
+                  Monacnapa, Blarney
+                  <br /> Co. Cork, Irland
+                </a>
               </p>
               <p className="col-sm">
-                <i className="fa fa-envelope mr-3"></i> 
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=suppoty@irish.com&su=THIS-WEBSITE-IS-SICK&body=DearIrishLtd&bcc=irish@ltd.com">
-                    support@irish.com </a>
+                <i className="fa fa-envelope mr-3"></i>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=tips@ingNytt.com&su=Tips"
+                >
+                  tips@ingNytt.com{" "}
+                </a>
               </p>
             </div>
             <div className="row">
@@ -43,25 +52,41 @@ export default class Footer extends Component {
             </div>
           </div>
           <div className="col-sm mx-5 text-center align-self-center">
-            <a href="https://www.facebook.com/nikolai.dokken.3">
+            <a
+              href="https://www.facebook.com/nikolai.dokken.3"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i
                 id="social-fb"
                 className="fa fa-facebook-square fa-3x social m-2"
               ></i>
             </a>
-            <a href="https://twitter.com/realDonaldTrump">
+            <a
+              href="https://twitter.com/realDonaldTrump"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i
                 id="social-tw"
                 className="fa fa-twitter-square fa-3x social m-2"
               ></i>
             </a>
-            <a href="#">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i
                 id="social-gp"
                 className="fa fa-google-plus-square fa-3x social m-2"
               ></i>
             </a>
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=suppoty@irish.com&su=THIS-WEBSITE-IS-SICK&body=DearIrishLtd&bcc=irish@ltd.com">
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=suppoty@irish.com&su=THIS-WEBSITE-IS-SICK&body=DearIrishLtd&bcc=irish@ltd.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i
                 id="social-em"
                 className="fa fa-envelope-square fa-3x social m-2"
@@ -69,7 +94,10 @@ export default class Footer extends Component {
             </a>
           </div>
         </div>
-        <div className="col text-center py-3 align-self-center justify-content-center">
+        <div
+          className="col text-center py-3 align-self-center justify-content-center"
+          style={{ backgroundColor: "#313131" }}
+        >
           <hr className="w-100" />
           <p>© 2019 Copyright: Irish Ltd.</p>
           <p>Sitemap | Betingelser og vilkår | Personvern</p>

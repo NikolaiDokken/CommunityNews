@@ -3,11 +3,7 @@
 import React, { Component } from "react";
 import Navbar from "./Navbar.js";
 import Footer from "./Footer.js";
-import {
-  getAllArticles,
-  deleteArticleDB,
-  getCategories
-} from "../Service.js";
+import { getAllArticles, deleteArticleDB, getCategories } from "../Service.js";
 import RegisterForm from "./RegisterForm.js";
 
 export default class Register extends Component<
@@ -36,6 +32,7 @@ export default class Register extends Component<
     var emptyArticle = {
       sak_id: 0,
       overskrift: "",
+      brukernavn: "",
       innhold: "",
       bilde: "",
       kategori_id: 0,
@@ -77,15 +74,40 @@ class Edit extends Component<
     this.state = {
       error: null,
       isLoaded: false,
-      items: []
+      items: [],
+      offset: 0
     };
   }
 
   componentDidMount() {
-    getAllArticles().then(items => {
+    getAllArticles(0).then(items => {
       this.setState({ items });
       this.setState({ isLoaded: true });
     });
+  }
+
+  getNextPage(nextPage) {
+    if (
+      nextPage &&
+      (this.state.items.length === 0 || this.state.items.length < 10)
+    ) {
+      getAllArticles(0 * 10).then(items => {
+        this.setState({ items });
+        this.setState({ offset: 0 });
+      });
+    } else if (!nextPage && this.state.offset === 0) {
+      return;
+    } else if (nextPage) {
+      getAllArticles((this.state.offset + 1) * 10).then(items => {
+        this.setState({ items });
+        this.setState({ offset: this.state.offset + 1 });
+      });
+    } else {
+      getAllArticles((this.state.offset - 1) * 10).then(items => {
+        this.setState({ items });
+        this.setState({ offset: this.state.offset - 1 });
+      });
+    }
   }
 
   render() {
@@ -100,8 +122,41 @@ class Edit extends Component<
           <h1>Rediger/Slett sak</h1>
           <div className="accordion" id="accordionExample">
             {items.map(sak => (
-              <EditCard sak={sak} kategorier={this.props.kategorier} key={sak.sak_id}/>
+              <EditCard
+                sak={sak}
+                kategorier={this.props.kategorier}
+                key={sak.sak_id}
+              />
             ))}
+            {Array(10 - items.length)
+              .fill()
+              .map(card => (
+                <div className="card">
+                  <div className="card-header" id={"headingOne"}>
+                    <div className="row">
+                      <h2 className="mb-0" style={{height: "38px"}}>
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+          <div className="row mt-2 justify-content-center">
+            <button
+              type="button"
+              class="btn btn-primary btn-arrow-left mx-3"
+              onClick={() => this.getNextPage(false)}
+            >
+              Forrige side
+            </button>
+            <div>Side: {this.state.offset + 1}</div>
+            <button
+              type="button"
+              class="btn btn-primary btn-arrow-right mx-3"
+              onClick={() => this.getNextPage(true)}
+            >
+              Neste Side
+            </button>
           </div>
         </div>
       );
