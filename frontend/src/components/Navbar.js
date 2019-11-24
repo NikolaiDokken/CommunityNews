@@ -179,7 +179,7 @@ export default class Navbar extends Component<
                       window.location.reload();
                     }}
                   >
-                    {result.overskrift.substring(0, 30) + "...\n"}
+                    {result.overskrift.substring(0, 28) + "...\n"}
                   </NavLink>
                 </div>
               ))}
