@@ -23,10 +23,8 @@ module.exports = class News extends Dao {
 
   getAllBySearch(search, callback) {
     super.query(
-      "SELECT sak_id, overskrift FROM sak WHERE overskrift LIKE '%" +
-        search +
-        "%'",
-      [],
+      "SELECT sak_id, overskrift FROM sak WHERE overskrift LIKE ? LIMIT 5",
+      ["%" + search + "%"],
       callback
     );
   }

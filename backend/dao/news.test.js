@@ -49,7 +49,7 @@ test("get all articles from db", done => {
     done();
   }
 
-  news.getAll(callback);
+  news.getAll(0, callback);
 });
 
 test("get all articles from db by importance", done => {
