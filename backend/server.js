@@ -9,10 +9,10 @@ const Comment = require("./dao/comment.js");
 
 var pool = mysql.createPool({
   connectionLimit: 2,
-  host: "mysql.stud.iie.ntnu.no",
-  user: "nikolard",
-  password: "7CTLHdCQ",
-  database: "nikolard",
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_DATABASE,
   debug: false
 });
 
