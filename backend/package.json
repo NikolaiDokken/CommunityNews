@@ -1,5 +1,6 @@
 {
   "name": "miniprosjekt",
+  "homepage": "https://community-paper-backend.herokuapp.com",
   "jest": {
     "verbose": true,
     "collectCoverage": true,
