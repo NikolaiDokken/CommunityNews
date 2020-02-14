@@ -6,6 +6,7 @@ app.use(bodyParser.json()); // for å tolke JSON
 const News = require("./dao/news.js");
 const Category = require("./dao/category.js");
 const Comment = require("./dao/comment.js");
+require("dotenv").config();
 
 var pool = mysql.createPool({
   connectionLimit: 2,
@@ -21,8 +22,5 @@ let category = new Category(pool);
 let comment = new Comment(pool);
 
 require("./router.js")(app, pool, news, category, comment);
-
-var htmlPath = __dirname + "/build";
-app.use(express.static(htmlPath));
 
 var server = app.listen(8080);
