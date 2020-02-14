@@ -1,5 +1,6 @@
 {
   "name": "miniproject",
+  "homepage": "https://community-paper-frontend.herokuapp.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
